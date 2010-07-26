@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Libraries &amp; Helpers</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Libraries</h1>
+<p>Libraries are how you extend the functionality of the framework. The two currently available libraries types are <b>library</b> and <b>helper</b>. Library contain a PHP class that gets instantiated, where the helper are just user defined function (UDF) scripts that get included.</p>
+
+<h1>Learning by example</h1>
+<h1>Loading a library</h1>
+
+<p>Library files locate in the /application/libraries/ directory. Lets create a library class called <b>demo</b>: </p>
+<p><b>/application/libraries/demo.php</b></p>
+<pre class="gray">
+class <span style="color: blue;">Demo</span>
+{
+	public function <span style="color: blue;">test</span>()
+	{
+		return <span style="color: green;">"This message load from DEMO library and it call from a TEST function"</span>;
+	}
+}
+</pre>
+
+<pre class="orange">
+The library <i>class names</i> can be any case, but the library <i>class name</i> must match the library filename.
+</pre>
+
+<p>To use our new library, we load it in the <a href="controllers.html">controller</a>. </p>
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+<span style="color: orange">//example with alias name</span>
+class <span style="color: blue;">Hello_Controller</span> extends <span style="color: blue;">AppController</span>
+{
+	function <span style="color: blue;">index</span>()
+	{
+		<span style="color: red;">$this</span>-><span style="color: blue;">load</span>-><span style="color: blue;">library</span>(<span style="color: green;">'demo'</span>, <span style="color: green;">'mydemo'</span>);
+		<span style="color: red;">$message</span> = <span style="color: red;">$this</span>-><span style="color: blue;">mydemo</span>-><span style="color: blue;">test</span>();
+
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">assign</span>(<span style="color: green;">'output'</span>, <span style="color: red;">$message</span>);
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">display</span>(<span style="color: green;">'hello_view'</span>);
+	}
+}
+
+<span style="color: orange">//example without alias name</span>
+class <span style="color: blue;">Hello_Controller</span> extends <span style="color: blue;">AppController</span>
+{
+	function <span style="color: blue;">index</span>()
+	{
+		<span style="color: red;">$this</span>-><span style="color: blue;">load</span>-><span style="color: blue;">library</span>(<span style="color: green;">'demo'</span>);
+		<span style="color: red;">$message</span> = <span style="color: red;">$this</span>-><span style="color: blue;">demo</span>-><span style="color: blue;">test</span>();
+
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">assign</span>(<span style="color: green;">'output'</span>, <span style="color: red;">$message</span>);
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">display</span>(<span style="color: green;">'hello_view'</span>);
+	}
+}
+</pre>
+<code class="orange">
+The second parameter is the <b>alias name</b> for the <i>property name</i>, which is optional.
+</code>
+<p>You should now have a variable $output in your view page with the demo test output.</p>
+
+<h1>Loading a helper</h1>
+<p>Lets create a helper script called <b>html</b>:</p>
+<p><b>/application/helpers/html.php</b></p>
+<pre class="gray">
+if (!function_exists(<span style="color: green;">'esc'</span>))
+{
+	function <span style="color: blue;">esc</span>(<span style="color: red;">$html</span>)
+	{
+		return htmlentities(<span style="color: red;">$html</span>);
+	}
+}
+
+if (!function_exists(<span style="color: green;">'anchor'</span>))
+{
+	function <span style="color: blue;">anchor</span>(<span style="color: red;">$url</span>, <span style="color: red;">$label</span>, <span style="color: red;">$attr</span>=<span style="color: blue;">null</span>)
+	{
+		return <span style="color: green;">"&lt;a href='<span style="color: black;">{$url}</span>' <span style="color: black;">{$attr}</span>&gt;<span style="color: black;">{$label}</span>&lt;/a&gt;"</span>;
+	}
+}
+</pre>
+<code class="orange">
+This helper name can be any case.
+</code>
+
+<p>To use our new helper, we load it in the <a href="controllers.html">controller</a>.</p>
+
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+class <span style="color: blue;">Hello_Controller</span> extends <span style="color: blue;">AppController</span>
+{
+	function <span style="color: blue;">index</span>()
+	{
+		<span style="color: red;">$this</span>-><span style="color: blue;">load</span>-><span style="color: blue;">helper</span>(<span style="color: green;">'html'</span>);
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">display</span>(<span style="color: green;">'hello_view'</span>);
+	}
+}
+</pre>
+<p>&nbsp;</p>
+<p><a href="autoload.html">Autoloading Libraries &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

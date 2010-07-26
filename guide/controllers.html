@@ -1,0 +1,141 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Controllers</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Controllers</h1>
+<p>Controller files is the glue for application together. It will load <a href="models.html">models</a>, <a href="views.html">views</a>, and tie in the helpers, libraries and application code. They are the content traffic cops, so to speak.</p>
+<p>A typical URL to a framework page looks like this: </p>
+<code class="gray">
+http://hostname/phphyppo/index.php/<span style="color: chocolate;">controller</span>/<span style="color: red;">action</span>/<span style="color: green;">param1</span>/<span style="color: darkgreen;">param2</span>/<span style="color: gray;">param3...</span>
+</code>
+
+<p>Where <b>controller</b> is the name of the <i>controller class</i> or <i>filename</i>, and <b>action</b> is the <i>method name</i> of the controller class you want to access. Values beyond that are used as parameters for your application. So, a real URL might look something like: </p>
+<code class="gray">
+http://localhost/phphyppo/index.php/<span style="color: chocolate;">hello</span>/<span style="color: red;">greeting</span>/<span style="color: green;">user</span>/<span style="color: gray;">hymns</span>
+</code>
+
+<h1>Learning by example</h1>
+<p>Controller files place in the /application/controllers/ directory. Lets create a controller: </p>
+
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	function <span style="color: blue">index</span>()
+	{
+		echo <span style="color: green">"Hello World."</span>;
+	}
+
+	function <span style="color: blue">time</span>()
+	{
+		echo date(<span style="color: green">'H:i:s'</span>);
+	}
+}
+</pre>
+
+<p>Now preview at your favourite browser</p>
+<code class="gray">
+http://localhost/phphyppo/index.php/hello/time
+</code>
+
+<p>If no <i>method name</i> in the URL, the default method <i>index</i> will be assigned.</p>
+<p>You can get rid of <i>index.php</i> in the URL with the following Apache rewrite rules: </p>
+<pre class="gray">
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+</pre>
+<p>Save the following code on filename as <b>.htaccess</b> and put this file at your index.php directory. Make sure your web server
+has install the ReWrite module. Now you can simply access the page like:</p>
+<code class="gray">
+http://localhost/phphyppo/hello/time
+</code>
+<p>If the above instruction does't work, what you need to do is edit the application config file and change the following line <i>$config['uri_protocol']</i> from <i>PATH_INFO</i> to <i>ORIG_PATH_INFO</i> value. The default value for this uri_protocol config is <i>PATH_INFO</i>.</p>
+<p><b>/application/configs/application.php</b></p>
+<pre class="gray">
+<span style="color: orange">/**
+ * URI Protocol
+ * 
+ * Variable name of server global to request URI.
+ * Available value for this uri protocol is PATH_INFO or ORIG_PATH_INFO
+ *
+ * @access public
+ * @value string 
+ */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'uri_protocol'</span>] = <span style="color: green">'PATH_INFO'</span>;
+</pre>
+
+<p>&nbsp;</p>
+<p><a href="views.html">Views &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

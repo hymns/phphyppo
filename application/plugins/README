@@ -1,0 +1,8 @@
+/application/plugins
+
+Place plugins class or scripts here.
+
+In a single-application install (one "application" directory), it is OK
+to put all scripts in /application/plugins
+
+You should never touch files under the core directory.

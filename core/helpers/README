@@ -1,0 +1,11 @@
+/core/helpers
+
+Place UDF scripts here.
+
+In a multi-application install, shared scripts should be placed in
+/core/helpers, and application-specific scripts place inside /application/helpers.
+
+In a single-application install (one "application" directory), it is OK
+to put all scripts in /application/helpers and leave /core/helpers alone.
+
+You should never touch files under the core/base directory.

@@ -1,0 +1,171 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Views</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Views</h1>
+<p>View files contain the final presentation elements for your content, such as HTML markup, javascripts and style sheets.</p>
+
+<h1>Learning by example</h1>
+<p>View files locate on the /application/views directory. Lets create a viewer: </p>
+
+<p><b>/application/views/hello_view.php</b></p>
+<pre class="gray">
+<span style="color: purple">&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;</span>Hello<span style="color: purple">&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;</span>
+		Hello World.
+	<span style="color: purple">&lt;/body&gt;
+&lt;/html&gt;</span>
+</pre>
+
+<p>To see the output viewer file, we call it from the <a href="controllers.html">controllers</a>.</p>
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	function <span style="color: blue">index</span>()
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>);
+	}
+}
+</pre>
+
+<p>Now preview at your browser</p>
+<code class="gray">
+http://localhost/phphyppo/index.php/hello
+</code>
+
+<h1>Assigning variables to the viewer</h1>
+<p>There are several ways to assign variables to the viewer. The first method by using assign() function.</p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	function <span style="color: blue">index</span>()
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">assign</span>(<span style="color: green">'title'</span>, <span style="color: green">'Hello'</span>);
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">assign</span>(<span style="color: green">'content'</span>, <span style="color: green">'Hello World'</span>);
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>);
+	}
+}
+</pre>
+<p><b>/application/views/hello_view.php</b></p>
+<pre class="gray">
+<span style="color: purple">&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;&lt;?</span>=<span style="color: red">$title</span>;<span style="color: purple">?&gt;&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;?</span>=<span style="color: red">$content</span>;<span style="color: purple">?&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</span>
+</pre>
+
+<p>You also can assign <i>arrays</i> of data instead of key &amp; value:</p>
+<pre class="gray">
+<span style="color: red">$data</span>[<span style="color: green">'title'</span>] = <span style="color: green">'Hello'</span>;
+<span style="color: red">$data</span>[<span style="color: green">'content'</span>] = <span style="color: green">'Hello world.'</span>;
+<span style="color: red">$this</span>-&gt;<span style="color: blue">view</span>-&gt;<span style="color: blue">assign</span>(<span style="color: red">$data</span>);
+</pre>
+
+<p>Not only that, you can assign variables thru display function too:</p>
+<pre class="gray">
+<span style="color: red">$data</span>[<span style="color: green">'title'</span>] = <span style="color: green">'Hello'</span>;
+<span style="color: red">$data</span>[<span style="color: green">'content'</span>] = <span style="color: green">'Hello world.'</span>;
+<span style="color: red">$this</span>-&gt;<span style="color: blue">view</span>-&gt;<span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>, <span style="color: red">$data</span>);
+</pre>
+
+<p>This example assigns text directly from the <a href="controllers.html">controller</a>. To maintain proper MVC separation, content should come from view files, 
+<a href="models.html">models</a> (database) or other sources such as config files or <a href="library.html">libraries</a>. As a rule of thumb, you should NEVER have to 
+EDIT a <a href="controllers.html">controller</a> or <a href="models.html">model</a> files to change the presentation or layout. The extension filename for view files can 
+automatically load is <i>.php</i> or <i>.html</i> and <i>.tpl</i></p>
+
+<h1>Capture viewer output to a variable</h1>
+<p>To assign the output of the viewer to a variable, use <i>$this->view->fetch()</i>.</p>
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	function <span style="color: blue">capture</span>()
+	{
+		<span style="color: red">$output</span> = <span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">fetch</span>(<span style="color: green">'hello_view'</span>);
+		echo <span style="color: red">$output</span>;
+	}
+}
+</pre>
+<p>Instead of echoing the output, you also can manipulate the fetch content by assign to main layout viewer like a themes.</p>
+
+<p>&nbsp;</p>
+<p><a href="models.html">Models &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

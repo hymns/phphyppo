@@ -1,0 +1,214 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Installation</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166; 
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Installation</h1>
+<p>Unpack the archive in your document root. Point your browser to the <i>index.php</i> file. You should see the <i>'hello world'</i> page.</p>
+
+<h1>Single Installation (Typical)</h1>
+<p>Unpack the distribution archive in a temporary folder. You will see the following structure:</p>
+<pre class='gray'>
+index.php
+.htaccess
+
+/application/
+	/cache/
+	/configs/
+	/controllers/
+	/helpers/
+	/libraries/
+	/models/
+	/plugins/
+	/vendors/
+	/views/
+
+/core/
+    /classes/
+	/helpers/
+	/libraries/
+	/plugins/
+	/vendors/
+	/views/
+
+/guide/
+	/images/
+
+/media/
+	/css/
+	/img/
+	/js/
+	/swf/
+</pre>
+
+<p>Example Install</p>
+<pre class="gray">
+/home/yourname/public_html/yourname.com/
+	index.php
+	.htaccess
+	
+	/application/
+	/guide/
+	/media/
+	/core/
+</pre>
+
+<p>Edit the <i>index.php</i> file and set configuration options.</p>
+<pre class="gray">
+<span style="color: orange">/* PHP error reporting level */
+//error_reporting(E_ALL);
+
+/* Uncomment this when you get blank page on development mode */
+//ini_set('display_errors', true); 
+
+/* if the /core/ directory is not inside root directory, uncomment and set here */
+//define('BASEDIR', '/path/to/phphyppo/');
+
+/* if the /application/ directory is not inside the root directory, uncomment and set here */
+//define('APPDIR', '/path/to/application/');</span>
+</pre>
+
+<p>If necessary, uncomment and set the php reporting level or display_errors. For development, you might want to enable all error reporting with E_ALL also
+uncomment and set the BASEDIR and APPDIR path, which is the path to where you installed the core &amp; application directory. The default setting should work for single site installation. </p>
+
+<h1>Shared Installation</h1>
+<p>Each website has it's own <i>index.php</i> file and <i>/application/</i> directory associated with it. The websites can share the main framework code base. This way framework upgrades are done in one place.</p>
+<code class="gray">
+The /path/to/core/ directory is what you update when you upgrade framework, it should never be touched.
+</code>
+
+<p>For each website, you will install a separate <i>index.php</i> file, <i>application</i> and <i>media</i> directory.
+<ul>
+    <li>Edit <i>index.php</i> set the BASEDIR and APPDIR path.</li>
+</ul>
+Example for two difference website on same hosting:
+</p>
+<pre class="gray">
+#website 1
+/home/yourname/public_html/yourname.com/
+	index.php
+	/application/
+	/media/
+
+#website 2
+/home/yourname/public_html/yourname.net/
+	index.php
+	/application/
+	/media/
+
+# framework package
+/home/yourname/public_html/
+	/phphyppo/
+		/application/
+		/core/
+		/guide/
+		/media/
+</pre>
+
+<p>For each website, edit the <i>index.php</i> file and set the path to BASEDIR and APPDIR. Example: <i>index.php</i>: </p>
+<pre class="gray">
+<span style="color: orange">/* if the /core/ directory is not inside root directory, uncomment and set here */</span>
+define(<span style="color: green">'BASEDIR'</span>, <span style="color: green">'/home/yourname/public_html/phphyppo/'</span>);
+
+<span style="color: orange">/* if the /application/ directory is not inside the root directory, uncomment and set here */</span>
+define(<span style="color: green">'APPDIR'</span>, <span style="color: green">'/home/yourname/public_html/yourname.com/application/'</span>);
+</pre>
+
+<h1>Database Setting</h1>
+<p>If you are using a database, be sure you edit your database settings here: </p>
+
+<p><b>/application/configs/database.php</b></p>
+<pre class="gray">
+<span style="color: orange">/* database engine plugin */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_plugin'</span>] = <span style="color: green">'ActiveRecord'</span>;
+
+<span style="color: orange">/* connection engine type (mysql, pgsql, sqlite) */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_type'</span>] = <span style="color: green">'mysql'</span>;
+
+<span style="color: orange">/* database information */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_host'</span>] = <span style="color: green">'localhost'</span>;
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_name'</span>] = <span style="color: green">'dbname'</span>;
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_user'</span>] = <span style="color: green">'dbuser'</span>;
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_pass'</span>] = <span style="color: green">'dbpass'</span>;
+
+<span style="color: orange">/* database connection persistence */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_persistent'</span>] = false;
+
+<span style="color: orange">/* database character set */</span>
+<span style="color: #ff0000">$config</span>[<span style="color: green">'db_charset'</span>] = <span style="color: green">'UTF-8'</span>;
+</pre>
+<p>Leave the plugin setting as ActiveRecord, unless you are using your own <a href="database.html">custom database</a> library. Set the type, host, name, user, pass, persistent 
+and charset settings according to your database server. Currently this framework only support and stable for database MySQL (mysql),  Postgre (pgsql) &amp; SQlite (sqlite). For MSSQL (dblib) still on beta test.</p>
+
+<p>&nbsp;</p>
+<p><a href="controllers.html">Controllers &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Custom Database</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Custom Database Library</h1>
+<p>If want to use something other than the built-in PDO database library, do the following: </p>
+<p>Assuming your database library is named CustomDB:</p>
+<p>
+<ul>
+    <li>Copy db.ActiveRecord.php from /path/to/core/plugins/db.ActiveRecord.php to /path/to/application/plugins/db.CustomDB.php</li>
+    <li>Edit the file, rename the class name from ActiveRecord to CustomDB.</li>
+    <li>Add or edit functionality for your suitable.</li>
+    <li>Edit /path/to/application/configs/database.php, change the $config['db_plugin'] value from ActiveRecord to CustomDB.</li>
+</ul>
+</p>
+<p>&nbsp;</p>
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

@@ -1,0 +1,11 @@
+/application/libraries
+
+Place library class here.
+
+In a single-application install (one "application" directory), it is OK
+to put all libraries in /application/libraries and leave /shared/libraries alone.
+
+In a multi-application install, shared libraries should be placed in
+/shared/libraries, and application-specific library go in /application/libraries.
+
+You should never touch files under the core directory.

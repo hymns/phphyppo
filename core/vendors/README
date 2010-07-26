@@ -1,0 +1,8 @@
+/core/vendors
+
+Place 3rdparty class here.
+
+In a multi-application or single install, 3rdparty application should be placed in
+/core/vendors, and application-specific files go in /application/vendors.
+
+You should never touch files under the core/base directory.

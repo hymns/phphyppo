@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Auto-load</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Auto Load</h1>
+<p>Instead of using <i>$this->load->library()</i> or  <i>$this->load->helper()</i> and <i>$this->load->model()</i> in your <a href="controllers.php">controllers</a>, you can have them autoloaded. Then it will be available on every <a href="controllers.html">controllers</a>. </p>
+<p><b>/application/configs/autoload.php</b></p>
+<pre class="gray">
+<span style="color: orange">/**
+ * Libraries
+ *
+ * Auto loaded application libraries 
+ *
+ * @access public
+ * @value array
+ */</span> 
+<span style="color: #ff0000">$autoload</span>[<span style="color: green">'libraries'</span>] = array(<span style="color: green">'mylib'</span>, <span style="color: green">'myotherlib'</span>);
+<span style="color: orange">
+/**
+ * Helpers
+ *
+ * Auto loaded application udf scripts 
+ *
+ * @access public
+ * @value array
+ */</span> 
+<span style="color: #ff0000">$autoload</span>[<span style="color: green">'helpers'</span>] = array(<span style="color: green">'myhelpers'</span>, <span style="color: green">'myscripts'</span>);
+
+<span style="color: orange">/**
+ * Models
+ *
+ * Auto loaded application models 
+ *
+ * @access public
+ * @value array
+ */</span> 
+<span style="color: #ff0000">$autoload</span>[<span style="color: green">'models'</span>] = array(<span style="color: green">'mymodel'</span>, <span style="color: green">'other_model'</span>);
+</pre>
+<p>Just add your <a href="library.html">libraries</a> or <a href="library.html">helpers</a> or <a href="models.html">models</a> name to the auto-load arrays.</p>
+<p>If you want mixed using <i>alias name</i> on auto-load library or model, use an array:</p>
+<pre class="gray">
+<span style="color: orange">/**
+ * Libraries
+ *
+ * Auto loaded application libraries 
+ *
+ * @access public
+ * @value array
+ */</span>
+<span style="color: #ff0000">$autoload</span>[<span style="color: green">'libraries'</span>] = array(
+					array(<span style="color: green">'mylib'</span>, <span style="color: green">'myalias'</span>),
+					array(<span style="color: green">'myotherlib'</span>, <span style="color: green">'otheralias'</span>),
+					<span style="color: green">'customlib'</span>
+				);
+	
+<span style="color: orange">/**
+ * Models
+ *
+ * Auto loaded application models 
+ *
+ * @access public
+ * @value array
+ */</span>
+<span style="color: #ff0000">$autoload</span>[<span style="color: green">'models'</span>] = array(
+					array(<span style="color: green">'mymodel'</span>, <span style="color: green">'my_alias'</span>),
+					array(<span style="color: green">'myothermodel'</span>, <span style="color: green">'otheraliasmodel'</span>),
+					<span style="color: green">'pagemodel'</span>
+				);
+</pre>
+<code class="orange">
+To keep the application performance, do not auto-load libraries or helpers that not regularly used.
+</code>
+
+<p>&nbsp;</p>
+<p><a href="database.html">Custom Database Library &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

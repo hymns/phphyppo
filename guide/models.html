@@ -1,0 +1,222 @@
+<html>
+<head>
+<title>phpHyppo User Guide - Models</title>
+
+<style type="text/css">
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Lucida Grande, Verdana, Sans-serif;
+ font-size: 12px;
+ color: #4F5155;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+.orange {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #FFF6BF;
+ border: 1px solid #FFD324;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.green {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #DEFFAF;
+ border: 1px solid #ACD919;
+ color: #444444;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.gray {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Models</h1>
+<p>Models is the layer of the MVC that are used to aggregate data. The underlying data source is typically a database, although this can be any type of source such as flat file or LDAP directory.</p>
+
+<h1>Learning by example</h1>
+<p>Model files locate in the /application/models directory. Now, lets create a model: </p>
+
+<p><b>/application/models/page_model.php</b></p>
+<pre class="gray">
+class <span style="color: blue">Page_Model</span> extends <span style="color: blue">AppModel</span>
+{
+	public function <span style="color: blue">get_title</span>()
+	{
+		return <span style="color: green">'Hello'</span>;
+	}
+
+	public function <span style="color: blue">get_body_content</span>()
+	{
+		return <span style="color: green">'Hello world.'</span>;
+	}
+}
+</pre>
+
+<pre class="orange">
+The 'model filename' <b>must match</b> with the 'model class name'. The class name can be any case, but the model filename <i>must be a lower case</i>.
+The <i>_model</i> extension <i>class</i> and <i>filename</i> <b>is not required</b>, but it helps keep things organized.
+</pre>
+
+<p>We load models within the <a href="controllers.html">controller</a>. Lets try an example: </p>
+<p><b>/application/controllers/hello.php</b></p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	public function <span style="color: blue">index</span>()
+	{
+		<span style="color: orange">// load the model</span>
+		<span style="color: red">$this</span>-><span style="color: blue">load</span>-><span style="color: blue">model</span>(<span style="color: green;">'Page_Model'</span>, <span style="color: green;">'page'</span>);
+
+		<span style="color: orange">// use the model to gather data</span>
+		<span style="color: red">$data</span>[<span style="color: green">'title'</span>] = <span style="color: red">$this</span>-><span style="color: blue;">page</span>-><span style="color: blue">get_title</span>();
+		<span style="color: red">$data</span>[<span style="color: green">'content'</span>] = <span style="color: red">$this</span>-><span style="color: blue;">page</span>-><span style="color: blue">get_body_content</span>();
+
+		<span style="color: orange">//display output</span>
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>, <span style="color: red">$data</span>);
+	}
+}
+</pre>
+
+<p>The <i>first parameter</i> for $this->load->model() is the <i>model class name</i>. The <i>second parameter</i> is an <i>optional alias name</i>. This loads the model into a class property, then you use it to gather data. If you kept the same view file from the previous chapter, you should see the same result except this time the assigned data came from a model.</p>
+
+<h1>Using the PDO database layer</h1>
+<p>This framework uses the PDO database abtraction layer for database access, which is included with PHP 5.1 and above. Be sure you have your <i>/application/configs/database.php</i> configuration info for your database.</p>
+
+<p>Lets try an example:</p>
+<p><b>/application/models/members_model.php</b></p>
+<p>Assuming you have a database with a table named <i>members</i>, the below get_members() function would return all the records in the <i>members table</i>.</p>
+<pre class="gray">
+class <span style="color: blue">Members_Model</span> extends <span style="color: blue">AppModel</span>
+{
+	public function <span style="color: blue">get_members</span>()
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">query</span>(<span style="color: green">'select * from members'</span>);
+
+		while(<span style="color: red">$row</span> = <span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">next</span>())
+			<span style="color: red">$results</span>[] = <span style="color: red">$row</span>;
+
+		return <span style="color: red">$results</span>;
+	}
+}
+</pre>
+
+<p>You also can use find() function to get single row for specific record</p>
+
+<pre class="gray">
+class <span style="color: blue">Members_Model</span> extends <span style="color: blue">AppModel</span>
+{
+	public function <span style="color: blue">get_member</span>(<span style="color: red">$id</span>)
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">where</span>(<span style="color: green">'id'</span>, <span style="color: red">$id</span>);
+		return <span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">find</span>(<span style="color: green">'members'</span>);
+	}
+}
+
+<span style="color: orange">// this example will produce sql statement: SELECT * FROM members WHERE id = 7 LIMIT 1</span>
+</pre>
+
+<p>For more than one record, you can use find_all()</p>
+
+<pre class="gray">
+class <span style="color: blue">Members_Model</span> extends <span style="color: blue">AppModel</span>
+{
+	public function <span style="color: blue">get_members</span>(<span style="color: red">$input</span>)
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">where</span>(<span style="color: green">'gender'</span>, <span style="color: red">$input</span>[<span style="color: green">'gender'</span>]);
+		<span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">where</span>(<span style="color: green">'(city = ? OR age > ?)'</span>, array(<span style="color: red">$input</span>[<span style="color: green">'city'</span>], <span style="color: red">$input</span>[<span style="color: green">'age'</span>]));
+		<span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">limit</span>(<span style="color: purple">20</span>);
+		return <span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">find_all</span>(<span style="color: green">'members'</span>, <span style="color: green">'firstname, lastname'</span>);
+	}
+}
+
+<span style="color: orange">// this example will produce sql statement: <br>// SELECT firstname, lastname FROM members WHERE gender = 'F' AND (city = 'batu pahat' OR age > 18) LIMIT 0, 20</span>
+</pre>
+
+<p>You also can apply <i>traditional sql statement</i> like example below. Above example gets one record from the database. This example shows how to use a variable passed into the method as a query parameter. Function query_one() will return only one record.</p>
+<pre class="gray">
+class <span style="color: blue">Members_Model</span> extends <span style="color: blue">AppModel</span>
+{
+	public function <span style="color: blue">get_member</span>(<span style="color: red">$id</span>)
+	{
+		return <span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">query_one</span>(<span style="color: green">'select * from members where id = ?'</span>, array(<span style="color: red">$id</span>));
+	}
+}
+</pre>
+
+<p>The function query_all() will return all records from a query. This is essentially the same as the first query() example.</p>
+
+<pre class="gray">
+class <span style="color: blue">Members_Model</span> extends <span style="color: blue">AppModel</span>
+{
+    public function <span style="color: blue">get_members</span>()
+    {
+		return <span style="color: red">$this</span>-><span style="color: blue">db</span>-><span style="color: blue">query_all</span>(<span style="color: green">'select * from members'</span>);
+	}
+}
+</pre>
+<p>You can optionally pass a format value of <b>PDO::FETCH_ASSOC</b>, <b>PDO::FETCH_NUM</b>, or <b>PDO::FETCH_BOTH</b>. <b>PDO::FETCH_ASSOC</b> is default. </p>
+
+<p>
+Available functions:
+<ul>
+    <li>$this->db->query($sql, $params) executes a query to loop over results with $this->db->next()</li>
+    <li>$this->db->query_one($sql, $params, $format) returns one result record</li>
+    <li>$this->db->query_all($sql, $params, $format) returns all result records</li>
+    <li>$this->db->find($tablename, $columns) execute a query single record for select statement <sup style="color: red">New</sup></li>
+    <li>$this->db->find_all($tablename, $columns) execute a query multi record for select statement <sup style="color: red">New</sup></li>
+    <li>$this->db->insert($tablename, $data_array) execute query for insert sql statement <sup style="color: red">New</sup></li>
+    <li>$this->db->delete($tablename) execute query for delete sql statement <sup style="color: red">New</sup></li>
+    <li>$this->db->update($tablename, $data_array) execute query for update sql statement <sup style="color: red">New</sup></li>
+    <li>$this->db->where($conditions) clause assigner for find, delete, update function <sup style="color: red">New</sup></li>
+    <li>$this->db->next($format) used to loop over a result set</li>
+    <li>$this->db->num_rows() returns the number of records from the last query </li>
+    <li>$this->db->last_insert_id() gets the last insert id from the database <i>(auto increment key only)</i></li>
+    <li>$this->db->affected_rows() returns the number of affected records from the last query (insert, update or delete) <sup style="color: red">New</sup></li>
+</ul>
+and much more...
+</p>
+<p>&nbsp;</p>
+<p><a href="library.html">Libraries &gt;</a></p>
+<p>&nbsp;</p>
+
+<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
+<a href="http://www.phphyppo.com/framework" target="_blank"><img src="images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+<a href="http://www.php.net" target="_blank"><img src="images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+<a href="http://www.mysql.com" target="_blank"><img src="images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+</body>
+</html>

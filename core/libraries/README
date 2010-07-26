@@ -1,0 +1,11 @@
+/core/libraries
+
+Place library here.
+
+In a multi-application install, shared library should be placed in
+/core/libraries, and application-specific library place inside /application/libraries.
+
+In a single-application install (one "application" directory), it is OK
+to put all library in /application/libraries and leave /core/libraries alone.
+
+You should never touch files under the core/base directory.
