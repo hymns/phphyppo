@@ -824,7 +824,7 @@ class ActiveRecord
 	 * @param	string $table table name
 	 * @param	string $columns table field name
 	 */
-	public function record_count($table, $columns='*')
+	public function record_count($table, $columns = '*')
 	{
 		if (empty($table))
 		{
@@ -876,28 +876,6 @@ class ActiveRecord
 	public function rollback()
 	{
 		return $this->pdo->rollBack();
-	}
-
-	/**
-	 * _set_clause
-	 *
-	 * set an active record clause
-	 *
-	 * @access	private
-	 * @param	string $type
-	 * @param	string $clause
-	 * @param	array $args
-	 */
-	private function _set_clause($type, $clause, $args = array())
-	{
-		// sanity check
-		if (empty($type) || empty($clause))
-			return false;
-		
-		$this->query_params[$type] = array('clause' => $clause);
-		
-		if (isset($args))
-			$this->query_params[$type]['args'] = $args;
 	}
 
 	/**
@@ -1047,6 +1025,28 @@ class ActiveRecord
 				return true;
 			break;
 		}
+	}
+
+	/**
+	 * _set_clause
+	 *
+	 * set an active record clause
+	 *
+	 * @access	private
+	 * @param	string $type
+	 * @param	string $clause
+	 * @param	array $args
+	 */
+	private function _set_clause($type, $clause, $args = array())
+	{
+		// sanity check
+		if (empty($type) || empty($clause))
+			return false;
+		
+		$this->query_params[$type] = array('clause' => $clause);
+		
+		if (isset($args))
+			$this->query_params[$type]['args'] = $args;
 	}
 
 	/**
