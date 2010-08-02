@@ -60,7 +60,7 @@ class AppViewer
 		// single assign
 		if (isset($value))
 			$this->vars[$key] = $value;
-
+		
 		// array assign
 		else
 			// assign entire array
@@ -85,7 +85,7 @@ class AppViewer
 	{		
 		// viewer viewer extension lists
 		$extensions = array('php', 'tpl', 'html');
-
+		
 		// loop over extension lists
 		foreach($extensions as $ext)
 		{
@@ -132,7 +132,7 @@ class AppViewer
 		$this->display($filename, $vars);
 		$results = ob_get_contents();
 		ob_end_clean();
-
+		
 		return $results;
 	}
 

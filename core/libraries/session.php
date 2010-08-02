@@ -209,30 +209,30 @@ class Session
 		// We only update the session every five minutes by default
 		if (($this->userdata['last_activity'] + $this->session_time_to_update) >= $this->now)
 			return;
-
+		
 		// Save the old session id so we know which record to
 		// update in the database if we need it
 		$old_sessid = $this->userdata['session_id'];
-
+		
 		// Generate new session id
 		$new_sessid = '';
 		while (strlen($new_sessid) < 32)
 			$new_sessid .= mt_rand(0, mt_getrandmax());
-
+		
 		// To make the session ID even more secure we'll combine it with the user's IP
 		$new_sessid .= $this->registry->input->ip_address();
-
+		
 		// Turn it into a hash
 		$new_sessid = md5(uniqid($new_sessid, true));
-
+		
 		// Update the session data in the session data array
 		$this->userdata['session_id'] = $new_sessid;
 		$this->userdata['last_activity'] = $this->now;
-
+		
 		// _set_cookie() will handle this for us if we aren't using database sessions
 		// by pushing all userdata to the cookie.
 		$cookie_data = null;
-
+		
 		// Write the cookie
 		$this->_set_cookie($cookie_data);
 	}
@@ -293,11 +293,11 @@ class Session
 	{
 		if (is_string($newdata))
 			$newdata = array($newdata => $newval);
-
+		
 		if (sizeof($newdata) > 0)
 			foreach($newdata as $key => $val)
 				$this->userdata[$key] = $val;
-
+		
 		$this->session_write();
 	}
 
@@ -311,11 +311,11 @@ class Session
 	{
 		if (is_string($newdata))
 			$newdata = array($newdata => '');
-
+		
 		if (sizeof($newdata) > 0)
 			foreach ($newdata as $key => $val)
 				unset($this->userdata[$key]);
-
+		
 		$this->session_write();
 	}
 
@@ -337,7 +337,7 @@ class Session
 		{
 			$time = time();
 		}
-
+		
 		return $time;
 	}
 
