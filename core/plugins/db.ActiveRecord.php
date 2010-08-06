@@ -31,11 +31,12 @@ if (!defined('SQL_ALL'))
  *
  * PDO database access
  * compile PHP with --enable-pdo (default with PHP 5.1+)
+ * currently this library only support for mysql, postgres, sqlite & oracle
  *
  * @package			phpHyppo
  * @subpackage		Core DB Plugin
  * @author				Muhammad Hamizi Jaminan
- * @version				1.10.7
+ * @version				1.10.8
  */
 
 class ActiveRecord
@@ -50,14 +51,32 @@ class ActiveRecord
 	var $pdo = null;
 
  	/**
-	 * $prefix
+	 * $db_name
 	 *
-	 * table prefix name
+	 * the database name
 	 *
 	 * @access	public
 	 */
-	var $prefix = null;
+	var $db_name;
 
+ 	/**
+	 * $db_type
+	 *
+	 * the database type
+	 *
+	 * @access	public
+	 */
+	var $db_type;
+
+ 	/**
+	 * $db_prefix
+	 *
+	 * the table prefix
+	 *
+	 * @access	public
+	 */
+	var $db_prefix;
+	
  	/**
 	 * $result
 	 *
@@ -66,7 +85,7 @@ class ActiveRecord
 	 * @access	public
 	 */
 	var $result = null;
-
+	
  	/**
 	 * $fetch_mode
 	 *
@@ -108,16 +127,6 @@ class ActiveRecord
 		if (empty($config))
 			throw new Exception('Database definitions required.', 201);
 		
-		// check table name prefix
-		if (!empty($config['db_prefix']))
-			$this->prefix = $config['db_prefix'];
-		
-		// postgres database trigger
-		$this->postgres = $config['db_type'] == 'pgsql' ? true : false;
-		
-		// mssql database trigger
-		$this->mssql = $config['db_type'] == 'dblib' ? true : false;
-		
 		// set default character set
 		if (empty($config['db_charset']))
 			$config['db_charset'] = 'UTF-8';
@@ -139,12 +148,17 @@ class ActiveRecord
 			throw new Exception(sprintf('Can\'t connect to PDO database %s. Error: %s', $config['db_type'], $e->getMessage()), 202);
 		}
 		
-		// persistent connection ( mssql does't support persistent connection)
-		if (!$this->mssql)
+		// persistent connection (mysql persistent connection)
+		if ($this->db_type == 'mysql')
 			$this->pdo->setAttribute(PDO::ATTR_PERSISTENT, !empty($config['db_persistent']) ? true : false); 
 		
 		// make PDO handle errors with exceptions
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		// set public vars for configs
+		foreach($config as $key => $value)
+			if (in_array($key, array('db_name', 'db_type', 'db_prefix')))
+				$this->$key = $value;
 		
 		// tidy up resource
 		unset($config);
@@ -156,12 +170,12 @@ class ActiveRecord
 	 * get single result from database
 	 *
 	 * @access	public
-	 * @param	string $table table name
+	 * @param	string $tablename table name
 	 * @param	string $columns table field name
 	 */
-	public function find($table, $columns=null)
+	public function find($tablename, $columns=null)
 	{
-		if (empty($table))
+		if (empty($tablename))
 		{
 			throw new Exception('Unable to select, table name required.', 210);
 			return false;
@@ -172,7 +186,7 @@ class ActiveRecord
 			$this->select($columns);
 		
 		// prepair for query assemble
-		$this->from($table);
+		$this->from($tablename);
 		
         // return result
 		return $this->query_one();
@@ -184,19 +198,19 @@ class ActiveRecord
 	 * get multiple result from database
 	 *
 	 * @access	public
-	 * @param	string $table table name
+	 * @param	string $tablename table name
 	 * @param	string $columns table field name
 	 */
-	public function find_all($table, $columns=null)
+	public function find_all($tablename, $columns=null)
 	{
-		if (empty($table))
+		if (empty($tablename))
 		{
 			throw new Exception('Unable to select, table name required.', 210);
 			return false;
 		}
 		
 		// prepair for query assemble
-		$this->from($table);
+		$this->from($tablename);
 		
 		// check if specific is supply rather then all fields
 		if (!empty($columns))
@@ -212,12 +226,13 @@ class ActiveRecord
 	 * update records
 	 *
 	 * @access	public
-	 * @param	string $table name of table
+	 * @param	string $tablename name of table
 	 * @param	array  $columns array of new data
+	 * @return	integer
 	 */
-	public function insert($table, $columns)
+	public function insert($tablename, $columns)
 	{
-		if (empty($table))
+		if (empty($tablename))
 		{
 			throw new Exception('Unable to insert, table name required.', 210);
 			return false;
@@ -234,9 +249,9 @@ class ActiveRecord
 		$column_values = array_values($columns);
 		
 		// insert statement
-		$query = array(sprintf('INSERT INTO %s (%s) VALUES', $this->prefix . $table, implode(',', $column_names)));
+		$query = array(sprintf('INSERT INTO %s (%s) VALUES', $this->db_prefix . $tablename, implode(',', $column_names)));
 		
-		// join the field array
+		// join the fields values
 		$query[] = '(' . rtrim(str_repeat('?, ', sizeof($column_names)), ', ') . ')';
 		
 		// merge the query array
@@ -245,11 +260,8 @@ class ActiveRecord
 		// make query
 		$this->_query($query, $column_values);
 		
-		// postgres sequence table
-		$sequence_table = $this->postgres ? $this->prefix . $table . '_id_seq' : null;
-		
         // return record id
-		return $this->last_insert_id($sequence_table);
+		return $this->last_insert_id($tablename);
 	}
 
 	/**
@@ -258,12 +270,13 @@ class ActiveRecord
 	 * update records
 	 *
 	 * @access	public
-	 * @param	string $table name of table
+	 * @param	string $tablename name of table
 	 * @param	array  $columns array of new data
+	 * @return	integer
 	 */
-	public function update($table, $columns)
+	public function update($tablename, $columns)
 	{
-		if (empty($table))
+		if (empty($tablename))
 		{
 			throw new Exception('Unable to update, table name required', 210);
 			return false;
@@ -276,7 +289,7 @@ class ActiveRecord
 		}
 		
 		// update statement
-		$query = array(sprintf('UPDATE %s SET', $this->prefix . $table));
+		$query = array(sprintf('UPDATE %s SET', $this->db_prefix . $tablename));
 		
 		// get column names & values
 		$column_names = array_keys($columns);
@@ -311,18 +324,19 @@ class ActiveRecord
 	 * delete records
 	 *
 	 * @access	public
-	 * @param	string $table name of table
+	 * @param	string $tablename name of table
+	 * @return	integer $id
 	 */
-	public function delete($table)
+	public function delete($tablename)
 	{
-		if (empty($table))
+		if (empty($tablename))
 		{
 			throw new Exception('Unable to delete, table name required', 210);
 			return false;
 		}
 		
 		// delete statement
-		$query = array(sprintf('DELETE FROM %s', $this->prefix . $table));
+		$query = array(sprintf('DELETE FROM %s', $this->db_prefix . $tablename));
 		$params = array();
 		
 		// assemble where clause
@@ -368,7 +382,7 @@ class ActiveRecord
 	 */
 	public function from($table_name)
 	{
-		return $this->query_params['from'] = $this->prefix . $table_name;
+		return $this->query_params['from'] = $this->db_prefix . $table_name;
 	}
 
 	/**
@@ -625,7 +639,7 @@ class ActiveRecord
 	public function join($join_table, $join_on, $join_type = null)
 	{
 		$join_condition = explode('=', $join_on);
-		$clause = 'JOIN ' . $this->prefix . $join_table . ' ON ' . $this->prefix . trim($join_condition[0]) . ' = ' . $this->prefix . trim($join_condition[1]);
+		$clause = 'JOIN ' . $this->db_prefix . $join_table . ' ON ' . $this->db_prefix . trim($join_condition[0]) . ' = ' . $this->db_prefix . trim($join_condition[1]);
 		
 		if (!empty($join_type))
 			$clause = $join_type . ' ' . $clause;
@@ -677,7 +691,15 @@ class ActiveRecord
 	public function limit($limit, $offset = 0)
 	{
 		if (!empty($offset))
-			$this->_set_clause('limit', sprintf('%d, %d', (int) $offset, (int) $limit));
+		{
+			// postgres
+			if ($this->db_type == 'pgsql')
+				$this->_set_clause('limit', sprintf('%d OFFSET %d', (int) $limit, (int) $offset));
+			
+			// mysql
+			else
+				$this->_set_clause('limit', sprintf('%d, %d', (int) $offset, (int) $limit));
+		}
 		else
 			$this->_set_clause('limit', sprintf('%d', (int) $limit));
 	}
@@ -761,19 +783,31 @@ class ActiveRecord
 	 * get last insert id from previous query
 	 *
 	 * @access	public
-	 * @param	string $sequence_table postgres db reference table
+	 * @param	int $tablename
 	 * @return	int $id
 	 */
-	public function last_insert_id($sequence_table = null)
+	public function last_insert_id($tablename)
 	{
-		// mssql db
-		if ($this->mssql)
+		// defined db type
+		switch($this->db_type)
 		{
-			$result = $this->pdo->query('SELECT SCOPE_IDENTITY()');
-			return (int) $result->fetchColumn();
+			// mssql
+			case 'dblib' :
+				$result = $this->pdo->query('SELECT SCOPE_IDENTITY()');
+				return (int) $result->fetchColumn();			
+			break;
+			
+			// postgres
+			case 'pgsql' :
+				$sequence_table = $this->db_prefix . $tablename . '_id_seq';
+				return $this->pdo->lastInsertId($sequence_table);
+			break;
+			
+			// mysql
+			default:
+				return $this->pdo->lastInsertId();
+			break;
 		}
-		
-		return $this->pdo->lastInsertId($sequence_table);
 	}
 
 	/**

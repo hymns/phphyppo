@@ -70,7 +70,7 @@ include_once(BASEDIR . 'core' . DS . 'helpers' . DS . 'common.php');
  *  Define a custom error handler
  * ------------------------------------------------------
  */
-set_error_handler('custom_error_handler');
+set_error_handler(array('CustomException', 'errorHandlerCallback'), E_ALL);
 set_exception_handler('custom_exception_handler');
 
 /**

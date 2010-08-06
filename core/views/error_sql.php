@@ -72,11 +72,11 @@ pre {
 <p>We found SQL syntax error:</p>
 <code><?php echo $error_msg; ?></code>
 
-<p>To solve this problem, please check model function usage under the controller file:</p>
+<p>To solve this problem, please check model function usage under the model file:</p>
 <code class='code'><?php echo CONTROLLER_NAME; ?>.php</code>
 
-<p>Locate the controller file under:</p>
-<code class='code'><?php echo APPDIR . 'controllers' . DS; ?></code>
+<p>Locate the model file under:</p>
+<code class='code'><?php echo APPDIR . 'models' . DS; ?></code>
 
 </body>
 </html>

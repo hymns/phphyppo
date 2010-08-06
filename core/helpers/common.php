@@ -25,19 +25,22 @@ if (!defined('BASEDIR'))
  */
 
 /**
- * custom_error_handler
+ * CustomException
  *
- * the internal error handler function
+ * the internal error handler class callback function
  *
  * @access public
  */
-if (!function_exists('custom_error_handler'))
-{
-	function custom_error_handler($error_code, $error_msg, $error_file, $error_line)
+class CustomException extends Exception 
+{ 
+	public static function errorHandlerCallback($error_code, $error_msg, $error_file, $error_line, $context) 
 	{
-		throw new Exception($error_msg, $error_code);
+		$exception = new self($error_msg, $error_code);
+		$exception->line = $error_line;
+		$exception->file = $error_file;
+		throw $exception;
 	}
-}
+} 
 
 /**
  * custom_exception_handler
