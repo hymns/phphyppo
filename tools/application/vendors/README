@@ -1,0 +1,8 @@
+/application/vendors
+
+Place thirdparty class or scripts here.
+
+In a single-application install (one "application" directory), it is OK
+to put all class or scripts inside /application/vendors
+
+You should never touch files under the core/base directory.
