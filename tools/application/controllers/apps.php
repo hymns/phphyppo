@@ -285,11 +285,11 @@ class Apps_Controller extends AppController
 				{
 					if (empty($model['autoincrement']) || $model['autoincrement'] != $field)
 					{
-						$content .= "\t<div id=\"label\">" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
+						$content .= "\t<div id='label'>" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<div id=\"input\"><textarea name='data[" . $field . "]' rows='5' cols='40'></textarea></div>\n\n";
+							$content .= "\t<div id='input'><textarea name='data[" . $field . "]' rows='5' cols='40'></textarea></div>\n\n";
 						else
-							$content .= "\t<div id=\"input\"><input type='text' name='data[" . $field . "]' size='40'></div>\n\n";
+							$content .= "\t<div id='input'><input type='text' name='data[" . $field . "]' size='40'></div>\n\n";
 					}
 				}
 				
@@ -314,11 +314,11 @@ class Apps_Controller extends AppController
 					// standard form
 					else
 					{
-						$content .= "\t<div id=\"label\">" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
+						$content .= "\t<div id='label'>" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<div id=\"input\"><textarea name='data[" . $field . "]'  rows='5' cols='40'><?php echo htmlentities(\$" . $field . "); ?></textarea></div>\n\n";
+							$content .= "\t<div id='input'><textarea name='data[" . $field . "]'  rows='5' cols='40'><?php echo htmlentities(\$" . $field . "); ?></textarea></div>\n\n";
 						else
-							$content .= "\t<div id=\"input\"><input type='text' name='data[" . $field . "]' size='40' value='<?php echo \$" . $field . "; ?>'></div>\n\n";
+							$content .= "\t<div id='input'><input type='text' name='data[" . $field . "]' size='40' value='<?php echo \$" . $field . "; ?>'></div>\n\n";
 					}
 				}
 				
