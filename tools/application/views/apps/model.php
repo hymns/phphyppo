@@ -61,7 +61,8 @@
 			<td><?php echo $field['type']; ?></td>
 			<td><?php echo $field['extra']; ?>&nbsp;</td>				
 		</tr>
-		<input type='hidden' name='fieldname[]' value='<?php echo $field['field']; ?>'>		
+		<input type='hidden' name='fieldname[]' value='<?php echo $field['field']; ?>'>	
+		<input type='hidden' name='type[<?php echo $field['field']; ?>]' value='<?php echo $field['type']; ?>'>		
 		<?php
 			// end db type
 			endif;
