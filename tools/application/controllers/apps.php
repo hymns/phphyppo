@@ -265,8 +265,8 @@ class Apps_Controller extends AppController
 				// loop over fieldnames
 				foreach($fieldnames as $field)
 				{
-					$content .= "<div id=\"title\">" . ucwords($field) . "</div>\n";
-					$content .= "<div id=\"content\"><?php echo \$" . $field . "; ?></div>\n\n";
+					$content .= "<p><b>" . ucwords($field) . "</b><br />\n";
+					$content .= "<?php echo \$" . $field . "; ?></p>\n\n";
 				}
 				
 				// populate view template
