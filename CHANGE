@@ -1,3 +1,8 @@
+10.8
+----
+- add application builder
+- patch database plugin support most databases
+
 10.7
 ----
 - update to php5 strict code

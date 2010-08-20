@@ -30,7 +30,7 @@ class Encrypt
 {
 	var $registry;
 	var $encryption_key	    = '';
-	var $_hash_type			= 'sha1';
+	var $_hash_type				= 'sha1';
 
 	/**
 	 * Constructor
@@ -57,15 +57,9 @@ class Encrypt
 		{
 			if ($this->encryption_key != '')
 				return $this->encryption_key;
-
-			//load config file
-			include APPDIR . 'configs' . DS . 'application.php';
-
-			// get encryption key setting
-			$key = $config['encryption_key'];
-
+			
 			// no key? exit
-			if ($key === FALSE)
+			if (CONF_ENCRYPTION_KEY === FALSE)
 				throw('In order to use the encryption class requires that you set an encryption key in your config file.');
 		}
 
