@@ -16,6 +16,6 @@
 		}
 		
 		// display form
-		$this->view->display('{controller}_create');
+		$this->view->display('{controller}/create');
 	}
 

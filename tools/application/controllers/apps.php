@@ -88,6 +88,18 @@ class Apps_Controller extends AppController
 		$controller = $this->input->post('controller_name', true);
 		$actions = $this->input->post('action', true);
 		
+		// default controller name
+		if (empty($controller))
+			exit('Please enter controller name (characters only)');
+		
+		// check reserve name
+		if ($controller == 'apps')
+			exit('Cannot use reserved controller name "apps"');
+		
+		// default value for action
+		if (empty($actions))
+			$actions = array('list', 'create');
+		
 		// get field & primary key
 		$model['tablename'] = $this->input->post('tablename', true);
 		$model['fieldnames'] = $this->input->post('fieldname', true);
@@ -106,6 +118,9 @@ class Apps_Controller extends AppController
 		
 		// generate view
 		$this->_generate_view($controller, $actions, $model); 
+		
+		// show notice
+		echo '<br>Your application has been successfully deploy!';
 	}
 	
 	/**
@@ -141,11 +156,11 @@ class Apps_Controller extends AppController
 		$data = str_replace('{controller_class}',  ucwords($controller), $data);
 		$data = str_replace('{controller_action}',  $controller_action, $data);
 		
-		// write controller to application directory
-		$this->_writeout(APPDIR . 'controllers' . DS . $controller . '.php', $data);		
+		// show output
+		echo 'Generate code for ' . $controller . ' controller...<br>';
 		
-		// show controller generated output
-		echo '<pre>' .htmlentities($data). '</pre>';
+		// write controller to application directory
+		$this->_writeout(APPDIR . 'controllers' . DS . $controller . '.php', $data);				
 	}
 
 	/**
@@ -182,11 +197,11 @@ class Apps_Controller extends AppController
 		$data = str_replace('{controller_class}',  ucwords($controller), $data);
 		$data = str_replace('{model_action}',  $model_action, $data);
 		
+		// show output
+		echo '<br>Generate code for ' . $controller . ' model...<br>';
+		
 		// write model to application directory
 		$this->_writeout(APPDIR . 'models' . DS . $controller . '_model.php', $data);		
-		
-		// show model generate output
-		echo '<pre>' .htmlentities($data). '</pre>';
 	}
 
 	/**
@@ -201,6 +216,16 @@ class Apps_Controller extends AppController
 	 */
 	private function _generate_view($controller, $actions, $model)
 	{
+		// directory for viewer
+		$directory = APPDIR . 'views' . DS . $controller;
+		
+		// check existing directory
+		if (!file_exists($directory) || !is_dir($directory))
+			mkdir($directory, 0777);
+		
+		// show output
+		echo '<br>Create directory view for ' . $controller . ' controller...<br>';
+		
 		// list over action
 		foreach($actions as $action)
 		{
@@ -219,7 +244,13 @@ class Apps_Controller extends AppController
 			if ($action == 'list')
 			{					
 				// create header
-				$header = "<tr>\n\t<th>Action</th>\n\t<th>" . implode("</th>\n\t<th>", $model['fieldnames']) . "</th>\n</tr>\n";
+				$header = "<tr>\n\t";
+				$header .= "<th>Action</th>";
+				foreach($model['fieldnames'] as $head)
+				{
+					$header .= "<th>" . ucwords(str_replace('_', ' ', $head)) . "</th>\n";
+				}
+				$header .= "</tr>\n";
 				
 				// create row content
 				$content = "<tr>\n\t<td>&nbsp;";
@@ -265,7 +296,7 @@ class Apps_Controller extends AppController
 				// loop over fieldnames
 				foreach($fieldnames as $field)
 				{
-					$content .= "<p><b>" . ucwords($field) . "</b><br />\n";
+					$content .= "<p><b>" . ucwords(str_replace('_', ' ', $field)) . "</b><br />\n";
 					$content .= "<?php echo \$" . $field . "; ?></p>\n\n";
 				}
 				
@@ -285,11 +316,11 @@ class Apps_Controller extends AppController
 				{
 					if (empty($model['autoincrement']) || $model['autoincrement'] != $field)
 					{
-						$content .= "\t<div id='label'>" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
+						$content .= "\t<label for='data[" . $field . "]'>" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<div id='input'><textarea name='data[" . $field . "]' rows='5' cols='40'></textarea></div>\n\n";
+							$content .= "\t<textarea name='data[" . $field . "]' rows='5' cols='40'></textarea><br />\n\n";
 						else
-							$content .= "\t<div id='input'><input type='text' name='data[" . $field . "]' size='40'></div>\n\n";
+							$content .= "\t<input type='text' name='data[" . $field . "]' size='40'><br />\n\n";
 					}
 				}
 				
@@ -314,11 +345,11 @@ class Apps_Controller extends AppController
 					// standard form
 					else
 					{
-						$content .= "\t<div id='label'>" . ucwords(str_replace('_', ' ', $field)) . "</div>\n";
+						$content .= "\t<label for='data[" . $field . "]'>" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<div id='input'><textarea name='data[" . $field . "]'  rows='5' cols='40'><?php echo htmlentities(\$" . $field . "); ?></textarea></div>\n\n";
+							$content .= "\t<textarea name='data[" . $field . "]'  rows='5' cols='40'><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
 						else
-							$content .= "\t<div id='input'><input type='text' name='data[" . $field . "]' size='40' value='<?php echo \$" . $field . "; ?>'></div>\n\n";
+							$content .= "\t<input type='text' name='data[" . $field . "]' size='40' value='<?php echo \$" . $field . "; ?>'><br />\n\n";
 					}
 				}
 				
@@ -328,8 +359,11 @@ class Apps_Controller extends AppController
 				$data = str_replace('{controller_class}',  ucwords($controller), $data);
 			}
 			
+			// show output
+			echo '<br>Generate code for ' . $controller . '  ' . $action . ' action viewer...<br>';
+			
 			// write the viewer
-			$this->_writeout(APPDIR . 'views' . DS . $controller . '_' . $action . '.php', $data);
+			$this->_writeout(APPDIR . 'views' . DS . $controller . DS . $action . '.php', $data);
 		}
 	}
 	
@@ -351,6 +385,9 @@ class Apps_Controller extends AppController
 		// write data
 		if (fwrite($handler, $content) === FALSE) 
 			throw new Exception('Cannot write to file (' . $filepath . ')', 500);
+		
+		// show notice
+		echo 'Write code to ' . $filepath . ' file...<br>';
 		
 		// close file
 		fclose($handler);

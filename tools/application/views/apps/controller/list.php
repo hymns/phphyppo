@@ -5,6 +5,6 @@
 		$content['{tablename}s'] = $this->{controller}->lists();
 		
 		// bind {controller} content to template & display
-		$this->view->display('{controller}_list', $content);
+		$this->view->display('{controller}/list', $content);
 	}
 

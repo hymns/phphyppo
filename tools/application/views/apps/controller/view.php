@@ -8,6 +8,6 @@
 		$content = $this->{controller}->view(${tablename}_id);
 		
 		// bind {controller} content to template & display
-		$this->view->display('{controller}_view', $content);
+		$this->view->display('{controller}/view', $content);
 	}
 

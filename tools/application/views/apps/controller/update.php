@@ -22,6 +22,6 @@
 		$content = $this->{controller}->view(${tablename}_id);
 		
 		// bind {controller} data to form & display
-		$this->view->display('{controller}_update', $content);
+		$this->view->display('{controller}/update', $content);
 	}
 
