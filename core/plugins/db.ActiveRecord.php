@@ -149,7 +149,7 @@ class ActiveRecord
 		}
 		
 		// persistent connection (mysql persistent connection)
-		if ($this->db_type == 'mysql')
+		if ($this->db_type == 'dblib')
 			$this->pdo->setAttribute(PDO::ATTR_PERSISTENT, !empty($config['db_persistent']) ? true : false); 
 		
 		// make PDO handle errors with exceptions
@@ -639,6 +639,11 @@ class ActiveRecord
 	public function join($join_table, $join_on, $join_type = null)
 	{
 		$join_condition = explode('=', $join_on);
+		
+		// check join field
+		if (sizeof($join_condition) == 0)
+			throw new Exception('JOIN require table field and foreign key condition', 217);
+		
 		$clause = 'JOIN ' . $this->db_prefix . $join_table . ' ON ' . $this->db_prefix . trim($join_condition[0]) . ' = ' . $this->db_prefix . trim($join_condition[1]);
 		
 		if (!empty($join_type))
