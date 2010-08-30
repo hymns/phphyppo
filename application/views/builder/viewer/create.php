@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Create New {controller_class}</title>
+	<title>Add New {controller_class}</title>
 	<style type="text/css">
 	label{
 		float: left;
@@ -34,7 +34,7 @@
 	</style>	
 </head>
 <body>
-<h2>Create New {controller_class}</h2>
+<h2>Add New {controller_class}</h2>
 <form action="<?php echo CONF_BASE_URL; ?>/{controller}/create" method="post">
 {content}
 	<input type="submit" id="submit_button" value="Submit">
