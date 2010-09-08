@@ -1,10 +1,7 @@
 	// view data
 	public function view(${tablename}_id)
 	{
-		// get only one specific data
-		$this->db->where('{primary}', ${tablename}_id);
-		
-		// from table {tablename}
-		return $this->db->find('{tablename}');
+		// get data detail
+		return $this->_data(${tablename}_id);
 	}
 

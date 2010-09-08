@@ -5,10 +5,10 @@
  * An open source MVC application framework for PHP 5.1+
  *
  * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
+ * @author		Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
  * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
- * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @license		LGPL, see included license file
+ * @link			http://www.phphyppo.com
  * @since			Version 8.02
  */
 
@@ -33,10 +33,10 @@ if (!defined('SQL_ALL'))
  * compile PHP with --enable-pdo (default with PHP 5.1+)
  * currently this library only support for mysql, postgres, sqlite & oracle
  *
- * @package			phpHyppo
- * @subpackage		Core DB Plugin
- * @author				Muhammad Hamizi Jaminan
- * @version				1.10.8
+ * @package		phpHyppo
+ * @subpackage	Core Database Plugin
+ * @author		Muhammad Hamizi Jaminan
+ * @version		1.10.8
  */
 
 class ActiveRecord
@@ -135,10 +135,10 @@ class ActiveRecord
 		try
 		{
 			$this->pdo = new PDO(
-									$config['db_type'] . ':host=' . $config['db_host'] . ';dbname=' . $config['db_name'],
-									$config['db_user'],
-									$config['db_pass']
-								);
+								$config['db_type'] . ':host=' . $config['db_host'] . ';dbname=' . $config['db_name'],
+								$config['db_user'],
+								$config['db_pass']
+							);
 			
 			// set character set
 			$this->pdo->exec('SET CHARACTER SET ' . $config['db_charset']);
@@ -188,7 +188,7 @@ class ActiveRecord
 		// prepair for query assemble
 		$this->from($tablename);
 		
-        // return result
+		// return result
 		return $this->query_one();
 	}
 
@@ -216,7 +216,7 @@ class ActiveRecord
 		if (!empty($columns))
 			$this->select($columns);
 		
-        // return result
+		// return result
 		return $this->query_all();
 	}
 	
@@ -260,7 +260,7 @@ class ActiveRecord
 		// make query
 		$this->_query($query, $column_values);
 		
-        // return record id
+		// return record id
 		return $this->last_insert_id($tablename);
 	}
 
@@ -311,8 +311,8 @@ class ActiveRecord
 		// reset default value
 		$this->query_params = array('select' => '*');
 		
-        // make query
-        $this->_query($query, $column_values);
+		// make query
+		$this->_query($query, $column_values);
 		
 		// return result
 		return $this->affected_rows();
@@ -352,8 +352,8 @@ class ActiveRecord
 		// reset default value
 		$this->query_params = array('select' => '*');
 		
-        // make query
-        $this->_query($query, $params);
+		// make query
+		$this->_query($query, $params);
 		
 		// return result
 		return $this->affected_rows();
@@ -516,7 +516,7 @@ class ActiveRecord
 	 * @access	public
 	 * @param	string $column_name
 	 * @param	array $value
-     * @param   string $prefix (optional)
+	 * @param	string $prefix (optional)
 	 * @param	string $wildcard (optional)
 	 */
 	public function _like($column_name, $column_value, $prefix = 'AND', $wildcard = 'last')
@@ -629,7 +629,7 @@ class ActiveRecord
 	 * join
 	 *
 	 * set the active record join clause
-     *  WHERE ...some conditions... INNER JOIN tablename ON ...join conditions...
+	 *  WHERE ...some conditions... INNER JOIN tablename ON ...join conditions...
 	 *
 	 * @access	public
 	 * @param	string $join_table
@@ -874,7 +874,7 @@ class ActiveRecord
 		// make count query
 		$record = $this->_query(sprintf('SELECT COUNT(%s) AS total FROM %s', $columns, $table), null, SQL_ONE, null);
 		
-        // return result
+		// return result
 		return $record['total'];
 	}
 
@@ -1013,10 +1013,10 @@ class ActiveRecord
 	 * internal query method
 	 *
 	 * @access	private
-	 * @param   string $query the query string
-	 * @param   array $params an array of query params
-	 * @param   int $return_type none/all/init
-	 * @param   int $fetch_mode the fetch formatting mode
+	 * @param	string $query the query string
+	 * @param	array $params an array of query params
+	 * @param	int $return_type none/all/init
+	 * @param	int $fetch_mode the fetch formatting mode
 	 */
 	private function _query($query, $params = null, $return_type = SQL_NONE, $fetch_mode = null)
 	{

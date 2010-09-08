@@ -163,13 +163,13 @@ class AppLoader
 			
 			// core libraries
 			if (!file_exists($filepath))
-    			throw new Exception($class_name, 403);
+				throw new Exception($class_name, 403);
 			
 			// load library engine
 			require_once $filepath;
 			
 			if (!class_exists($class_name))
-    			throw new Exception($class_name, 404);
+				throw new Exception($class_name, 404);
 		}
 		
 		// get instance of registry object
@@ -216,7 +216,7 @@ class AppLoader
 		
 		// if no filename, use the lower-case model name
 		if (!isset($filename))
-            $filename = strtolower($model_name);
+			$filename = strtolower($model_name);
 		
 		// assign application model path
 		$filepath = APPDIR . 'models' . DS . $filename . '.php';

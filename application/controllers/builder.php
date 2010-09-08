@@ -93,12 +93,15 @@ class Builder_Controller extends AppController
 			exit('Please enter controller name (characters only)');
 		
 		// check reserve name
-		if ($controller == 'apps')
-			exit('Cannot use reserved controller name "apps"');
+		if ($controller == 'builder')
+			exit('Cannot use reserved controller name "builder"');
 		
 		// default value for action
 		if (empty($actions))
 			$actions = array('list', 'create');
+		
+		// filter out
+		$controller = preg_replace('!\W!', '', $controller);
 		
 		// get field & primary key
 		$model['tablename'] = $this->input->post('tablename', true);
@@ -120,7 +123,7 @@ class Builder_Controller extends AppController
 		$this->_generate_view($controller, $actions, $model); 
 		
 		// show notice
-		echo '<br>Your application has been successfully deploy!';
+		echo '<br>Your application has been successfully deploy! Access your <a href="' . CONF_BASE_URL . '/' . $controller . '">application here</a>';
 	}
 	
 	/**
@@ -183,12 +186,22 @@ class Builder_Controller extends AppController
 		{
 			// populate template action
 			$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'model' . DS . $action . '.php');
-			$data = str_replace('{controller}',  $controller, $data);
 			$data = str_replace('{tablename}',  $model['tablename'], $data);
 			$data = str_replace('{primary}',  $model['primary'], $data);
 			
 			// assign model action
 			$model_action .= $data;
+		}
+		
+		// populate template _data action
+		if (in_array('view', $actions) || in_array('update', $actions))
+		{
+			$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'model' . DS . '_data.php');
+			$data = str_replace('{tablename}',  $model['tablename'], $data);
+			$data = str_replace('{primary}',  $model['primary'], $data);
+			
+			// assign model action
+			$model_action .= $data;			
 		}
 		
 		// populate template model
@@ -245,7 +258,7 @@ class Builder_Controller extends AppController
 			{					
 				// create header
 				$header = "<tr>\n\t";
-				$header .= "<th>Action</th>";
+				$header .= "<th>Action</th>\n";
 				foreach($model['fieldnames'] as $head)
 				{
 					$header .= "<th>" . ucwords(str_replace('_', ' ', $head)) . "</th>\n";
@@ -253,7 +266,7 @@ class Builder_Controller extends AppController
 				$header .= "</tr>\n";
 				
 				// create row content
-				$content = "<tr>\n\t<td>&nbsp;";
+				$content = "<tr>\n\t<td>";
 				
 				// create add link
 				$addlink = in_array('create', $actions) ? '<b><a href="<?php echo CONF_BASE_URL; ?>/{controller}/create">Add New</a></b>' : '';
@@ -263,14 +276,14 @@ class Builder_Controller extends AppController
 					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/view/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>">View</a> ';
 				
 				// create update link
-				elseif (in_array('update', $actions))
+				if (in_array('update', $actions))
 					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/update/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>">Update</a> ';
 					
 				// create delete link
-				elseif (in_array('delete', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/delete/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>">Delete</a>';
+				if (in_array('delete', $actions))
+					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/delete/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
 					
-				$content .= '</td>';
+				$content .= "&nbsp;</td>\n";
 				
 				// loop over fieldname
 				foreach($fieldnames as $field)

@@ -19,7 +19,7 @@
 		${tablename}_id = (int) $this->uri->segment('2');
 		
 		// get {controller} data from database
-		$content = $this->{controller}->view(${tablename}_id);
+		$content = $this->{controller}->_data(${tablename}_id);
 		
 		// bind {controller} data to form & display
 		$this->view->display('{controller}/update', $content);
