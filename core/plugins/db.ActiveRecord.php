@@ -34,7 +34,7 @@ if (!defined('SQL_ALL'))
  * currently this library only support for mysql, postgres, sqlite & oracle
  *
  * @package		phpHyppo
- * @subpackage	Core Database Plugin
+ * @subpackage	Core DB Plugin
  * @author		Muhammad Hamizi Jaminan
  * @version		1.10.8
  */
@@ -149,7 +149,7 @@ class ActiveRecord
 		}
 		
 		// persistent connection (mysql persistent connection)
-		if ($this->db_type == 'dblib')
+		if ($this->db_type == 'mysql')
 			$this->pdo->setAttribute(PDO::ATTR_PERSISTENT, !empty($config['db_persistent']) ? true : false); 
 		
 		// make PDO handle errors with exceptions
@@ -486,7 +486,7 @@ class ActiveRecord
 	 * @param	array $column_value
 	 * @param	string $wildcard (optional) - first, both, last
 	 */
-	public function like($column_name, $value, $wildcard='last')
+	public function like($column_name, $column_value, $wildcard='last')
 	{
    	    $this->_like($column_name, $column_value, 'AND', $wildcard);
 	}
@@ -515,7 +515,7 @@ class ActiveRecord
 	 *
 	 * @access	public
 	 * @param	string $column_name
-	 * @param	array $value
+	 * @param	array $column_value
 	 * @param	string $prefix (optional)
 	 * @param	string $wildcard (optional)
 	 */
@@ -643,7 +643,7 @@ class ActiveRecord
 		// check join field
 		if (sizeof($join_condition) == 0)
 			throw new Exception('JOIN require table field and foreign key condition', 217);
-		
+			
 		$clause = 'JOIN ' . $this->db_prefix . $join_table . ' ON ' . $this->db_prefix . trim($join_condition[0]) . ' = ' . $this->db_prefix . trim($join_condition[1]);
 		
 		if (!empty($join_type))
@@ -804,6 +804,9 @@ class ActiveRecord
 			
 			// postgres
 			case 'pgsql' :
+				if ($this->no_sequence)
+					return $this->pdo->lastInsertId();
+				
 				$sequence_table = $this->db_prefix . $tablename . '_id_seq';
 				return $this->pdo->lastInsertId($sequence_table);
 			break;
@@ -861,9 +864,9 @@ class ActiveRecord
 	 *
 	 * @access	public
 	 * @param	string $table table name
-	 * @param	string $columns table field name
+	 * @param	string $column_name table field name
 	 */
-	public function record_count($table, $columns = '*')
+	public function record_count($table, $column_name = '*')
 	{
 		if (empty($table))
 		{
@@ -872,7 +875,7 @@ class ActiveRecord
 		}
 		
 		// make count query
-		$record = $this->_query(sprintf('SELECT COUNT(%s) AS total FROM %s', $columns, $table), null, SQL_ONE, null);
+		$record = $this->_query(sprintf('SELECT COUNT(%s) AS total FROM %s', $column_name, $table), null, SQL_ONE, null);
 		
 		// return result
 		return $record['total'];
