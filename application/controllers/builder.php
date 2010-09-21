@@ -5,7 +5,7 @@
  * application builder controller
  *
  * @package	    phpHyppo
- * @subpackage	phpHyppo Tools Application
+ * @subpackage	phpHyppo Application Builder
  * @author			Muhammad Hamizi Jaminan
  */
  
@@ -24,7 +24,7 @@ class Builder_Controller extends AppController
 		$this->load->library('uri');
 		$this->load->library('input');
 		
-		// load tools model alias as tools
+		// load builder model alias as builder
 		$this->load->model('builder_model', 'builder');		
 	}
 	
@@ -407,6 +407,6 @@ class Builder_Controller extends AppController
 	}
 }
 
-/* End of tools.php */
-/* Location: /application/controllers/tools.php */
+/* End of builder.php */
+/* Location: /application/controllers/builder.php */
 ?>
