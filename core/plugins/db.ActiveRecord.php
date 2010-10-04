@@ -109,6 +109,13 @@ class ActiveRecord
 	 */
 	var $last_query = null;
 
+	/**
+	 * $no_sequence
+	 *
+	 * @access public
+	 */
+	var $no_sequence = false;
+	
  	/**
 	 * class constructor
 	 *

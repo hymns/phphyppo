@@ -1,4 +1,11 @@
-	// list all data
+	/**
+	 * index
+	 *
+	 * listing data {controller}
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function index()
 	{	
 		// get data from database

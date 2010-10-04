@@ -1,4 +1,11 @@
-	// detail data
+	/**
+	 * _data
+	 *
+	 * get detail data
+	 *
+	 * @access private
+	 * @return array
+	 */
 	public function _data(${tablename}_id)
 	{
 		// get only one specific data

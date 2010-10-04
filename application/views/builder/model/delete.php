@@ -1,4 +1,11 @@
-	// remove specific data
+	/**
+	 * remove
+	 *
+	 * delete / remove existing data
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function remove(${tablename}_id)
 	{
 		// remove only specific {controller}

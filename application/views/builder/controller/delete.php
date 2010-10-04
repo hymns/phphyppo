@@ -1,4 +1,11 @@
-	// remove existing {controller} 
+	/**
+	 * delete
+	 *
+	 * remove or delete existing {controller}
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function delete()
 	{
 		// get specific {tablename} id

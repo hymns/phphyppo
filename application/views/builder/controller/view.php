@@ -1,4 +1,11 @@
-	// view detail {controller}
+	/**
+	 * view
+	 *
+	 * show / view detail {controller}
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function view()
 	{
 		// get the specific {tablename} id

@@ -1,4 +1,11 @@
-	// update existing {controller}
+	/**
+	 * update
+	 *
+	 * update existing {controller}
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function update()
 	{
 		// load input library

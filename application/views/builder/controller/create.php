@@ -1,4 +1,11 @@
-	// create / add new {controller}
+	/**
+	 * index
+	 *
+	 * create / add new {controller}
+	 *
+	 * @access public
+	 * @return none
+	 */
 	public function create()
 	{
 		// load input library

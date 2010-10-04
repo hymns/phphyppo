@@ -381,6 +381,55 @@ if (!function_exists('strip_slashes'))
 	}
 }
 
+/**
+ * randomizer
+ *
+ * make random character
+ *
+ * @access public
+ * @params integer $max
+ * @params string $type
+ * @return string
+ */
+if (!function_exists('randomizer'))
+{
+	function randomizer($max=10, $type = 'both')
+	{
+		// key list
+		switch($type)
+		{
+			case 'int':
+			$key = array(0,1,2,3,4,5,6,7,8,9);
+			break;
+			
+			case 'chr':
+			$key = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+			break;
+			
+			case 'both':
+			$key = array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');	
+			break;
+		}
+		
+		// default data
+		$result = '';
+		
+		// generate key
+		for($i=1; $i<=$max; $i++)
+		{
+			$random  = rand(0, count($key)-1);
+			$result .= $key[$random];
+		}
+		
+		// re-check string lens
+		if (strlen($result) != $max)
+			$result = randomizer($max, $type);
+			
+		// return data
+		return $result;
+	}
+}
+
 /*
  * Auto defined config variables
  */

@@ -1,4 +1,11 @@
-	// add new data
+	/**
+	 * index
+	 *
+	 * create / add new data
+	 *
+	 * @access public
+	 * @return integer
+	 */
 	public function create($input)
 	{
 		// insert new data to table {tablename}

@@ -1,4 +1,11 @@
-	// update data
+	/**
+	 * update
+	 *
+	 * update or change data on database
+	 *
+	 * @access public
+	 * @return integer
+	 */
 	public function update($input)
 	{
 		// update only specific data
