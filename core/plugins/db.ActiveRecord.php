@@ -533,15 +533,15 @@ class ActiveRecord
 		switch($wildcard)
 		{
 			case 'both':
-				$this->_where($clause, (array) '%' . $column_value . '%', $prefix);
+				$this->_where($clause, (array) ('%' . $column_value . '%'), $prefix);
 			break;
 			
 			case 'first' :
-				$this->_where($clause, (array) '%' . $column_value, $prefix);
+				$this->_where($clause, (array) ('%' . $column_value), $prefix);
 			break;
 			
 			default:
-				$this->_where($clause, (array) $column_value . '%', $prefix);
+				$this->_where($clause, (array) ($column_value . '%'), $prefix);
 			break;
 		}
 	}
