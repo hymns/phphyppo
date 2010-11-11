@@ -42,9 +42,9 @@ class Template
 	}
 
 	/**
-	 *  Parse a template
+	 *  Display a template
 	 *
-	 * Parses pseudo-variables contained in the specified template,
+	 * Parses & display pseudo-variables contained in the specified template,
 	 * replacing them with the data in the second param
 	 *
 	 * @access	public
@@ -53,7 +53,7 @@ class Template
 	 * @param	bool
 	 * @return	string
 	 */
-	public function parse($template, $data, $return = false)
+	public function display($template, $data, $return = false)
 	{
 		$template = $this->_fetch($template);
 
@@ -172,11 +172,11 @@ class Template
 			/* check html extension */
 			$filepath = APPDIR . 'views' . DS . $filename . '.html';
 
-		if (!file_exists($filepath))
+		elseif (!file_exists($filepath))
 			/* check php extension */
 			$filepath = APPDIR . 'views' . DS . $filename . '.php';
 
-		if (file_exists($filepath))
+		elseif (file_exists($filepath))
 		{
 			ob_start();
 			include($filepath);
