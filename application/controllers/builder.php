@@ -273,21 +273,21 @@ class Builder_Controller extends AppController
 				
 				// create view link
 				if (in_array('view', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/view/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>">View</a> ';
+					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/view/<?php echo $row[\'' . $model['primary'] . '\']; ?>">View</a> ';
 				
 				// create update link
 				if (in_array('update', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/update/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>">Update</a> ';
+					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/update/<?php echo $row[\'' . $model['primary'] . '\']; ?>">Update</a> ';
 					
 				// create delete link
 				if (in_array('delete', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/delete/<?php echo ${tablename}[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
+					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/delete/<?php echo $row[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
 					
 				$content .= "&nbsp;</td>\n";
 				
 				// loop over fieldname
 				foreach($fieldnames as $field)
-					$content .= "\t<td><?php echo \$" . $model['tablename'] . "['" . $field . "']; ?></td>\n";
+					$content .= "\t<td><?php echo \$row['" . $field . "']; ?></td>\n";
 				
 				// close row content
 				$content .= "</tr>\n";
@@ -329,11 +329,11 @@ class Builder_Controller extends AppController
 				{
 					if (empty($model['autoincrement']) || $model['autoincrement'] != $field)
 					{
-						$content .= "\t<label for='data[" . $field . "]'>" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
+						$content .= "\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<textarea name='data[" . $field . "]' rows='5' cols='40'></textarea><br />\n\n";
+							$content .= "\t<textarea name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"></textarea><br />\n\n";
 						else
-							$content .= "\t<input type='text' name='data[" . $field . "]' size='40'><br />\n\n";
+							$content .= "\t<input type=\"text\" name=\"data[" . $field . "]\" size=\"40\"><br />\n\n";
 					}
 				}
 				
@@ -353,16 +353,16 @@ class Builder_Controller extends AppController
 				{
 					// set hidden form for primary key
 					if ($model['primary'] == $field)
-						$content .= "\t<input type='hidden' name='data[" . $field . "]' value='<?php echo \$" . $field . "; ?>'>\n";
+						$content .= "\t<input type=\"hidden\" name=\"update[" . $field . "]\" value=\"<?php echo \$" . $field . "; ?>\">\n";
 						
 					// standard form
 					else
 					{
-						$content .= "\t<label for='data[" . $field . "]'>" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
+						$content .= "\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<textarea name='data[" . $field . "]'  rows='5' cols='40'><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
+							$content .= "\t<textarea name=\"data[" . $field . "]\"  rows=\"5\" cols=\"40\"><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
 						else
-							$content .= "\t<input type='text' name='data[" . $field . "]' size='40' value='<?php echo \$" . $field . "; ?>'><br />\n\n";
+							$content .= "\t<input type=\"text\" name=\"data[" . $field . "]\" size=\"40\" value=\"<?php echo \$" . $field . "; ?>\"><br />\n\n";
 					}
 				}
 				

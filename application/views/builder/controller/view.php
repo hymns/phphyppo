@@ -1,7 +1,7 @@
 	/**
 	 * view
 	 *
-	 * show / view detail {controller}
+	 * show / view details {controller}
 	 *
 	 * @access public
 	 * @return none

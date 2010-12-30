@@ -17,8 +17,11 @@
 		// data exists
 		if ($input !== false)
 		{
+			// get specific update
+			$update = $this->input->post('update', true);
+			
 			// update data on database
-			if ($this->{controller}->update($input))
+			if ($this->{controller}->update($input, $update))
 				redirect('/{controller}/index');
 		}
 		

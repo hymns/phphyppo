@@ -10,7 +10,13 @@
  
 class {controller_class}_Controller extends AppController
 {
-	// loading up the require library & model
+	/**
+	 * beforeFilter
+	 *
+	 * load library and database before event execution
+	 *
+	 * @access	public
+	 */
 	public function beforeFilter()
 	{
 		// load uri library

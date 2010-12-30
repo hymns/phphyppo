@@ -4,6 +4,7 @@
 	 * delete / remove existing data
 	 *
 	 * @access public
+	 * @params int ${tablename}_id
 	 * @return none
 	 */
 	public function remove(${tablename}_id)
