@@ -436,6 +436,9 @@ if (!function_exists('randomizer'))
 foreach($config as $key => $val)
 	define('CONF_' . strtoupper($key), $val);
 
+/* Defined base path - Jasdy Syarman */
+define('CONF_BASE_PATH', str_replace($_SERVER['DOCUMENT_ROOT'], NULL, dirname($_SERVER['SCRIPT_FILENAME'])));
+
 /* End of common.php */
 /* Location: core/helpers/common.php */
 ?>
