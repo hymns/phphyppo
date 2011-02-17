@@ -7,8 +7,8 @@
  * @package		phpHyppo
  * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
  * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
- * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @license		LGPL, see included license file
+ * @link			http://www.phphyppo.com
  * @since			Version 8.06
  */
 
@@ -45,7 +45,7 @@ if (!defined('BASEDIR'))
  // Example 2
  // - Get key & val associative array, starting from third segment
  //
- $uri = $this->uri->uri_to_assoc(3);
+ $uri = $this->uri->assoc(3);
  print_r($uri);
 
  output:
@@ -58,7 +58,7 @@ if (!defined('BASEDIR'))
  // Example 3
  // - Assign url to an indexed array, starting from third segment
  //
- $uri = $this->uri->uri_to_array(3);
+ $uri = $this->uri->array(3);
  print_r($uri);
 
  output:
@@ -114,7 +114,7 @@ class URI
 	}
 
  	/**
-	 * uri_to_assoc
+	 * assoc
 	 *
 	 * set uri path to associate id
 	 *
@@ -122,7 +122,7 @@ class URI
      * @params  integer $index
 	 * @return	array
 	 */
-	public function uri_to_assoc($index)
+	public function assoc($index)
 	{
 		$assoc = array();
 		for ($i = sizeof($this->path), $x = $index-1; $x < $i; $x += 2)
@@ -134,7 +134,7 @@ class URI
 	}
 
  	/**
-	 *  uri_to_array
+	 *  array
 	 *
 	 * set uri path to array
 	 *
@@ -142,7 +142,7 @@ class URI
      * @params  integer $index
 	 * @return	array
 	 */
-	public function uri_to_array($index = 0)
+	public function array($index = 0)
 	{
 		if (is_array($this->path))
 			return array_slice($this->path, $index);
