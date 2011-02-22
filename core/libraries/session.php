@@ -25,6 +25,12 @@ if (!defined('BASEDIR'))
  * @subpackage	Shared Library
  * @author			Muhammad Hamizi Jaminan
  */
+
+**
+** Note: This library is mod & taken from CI Library
+** for compatibility for this framework release.
+** all credits belong to CodeIgniter Author.
+*/
 class Session
 {
 	// session variable
