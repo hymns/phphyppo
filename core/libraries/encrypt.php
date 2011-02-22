@@ -27,11 +27,11 @@ if (!defined('BASEDIR'))
  * @author			Muhammad Hamizi Jaminan
  */
 
-**
-** Note: This library is mod & taken from CI Library
-** for compatibility for this framework release.
-** all credits belong to CodeIgniter Author.
-*/
+/**
+ * Note: This library is mod & taken from CI Library
+ * for compatibility for this framework release.
+ * all credits belong to CodeIgniter Author.
+ */
 class Encrypt
 {
 	var $registry;
