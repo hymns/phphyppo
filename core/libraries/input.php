@@ -57,7 +57,11 @@ if (!defined('BASEDIR'))
 
  # get browser name
  echo $this->input->user_agent();
-  
+
+**
+** Note: This library is mod & taken from CI Library
+** for compatibility for this framework release.
+** all credits belong to CodeIgniter Author. 
 */
 class input 
 {
