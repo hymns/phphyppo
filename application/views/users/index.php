@@ -1,0 +1,1 @@
+<p>Hello <strong><?=$username;?></strong>!</p>
