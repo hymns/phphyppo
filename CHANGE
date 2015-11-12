@@ -1,7 +1,12 @@
-10.8
-----
-- add application builder
-- patch database plugin support most databases
+15.11
+-----
+- accept url parameter thru controller method
+- update builder
+
+11.03
+-----
+- add bridge function on loader to cross call existing controller
+- update database class for support multiple databases
 
 10.7
 ----
@@ -21,14 +26,14 @@
 ------
 - add new function on database class function
 - tweak bootstrap to optimize performance
-- clean up code and update obsolate function
+- clean up code and update for compatibility obsolete function
 
 9.07
 -------
 - add uri mapping (routes)
 - patch remote uri injection
 - add new function on database class function
-- remove obsolate function
+- remove obsolete function
 
 8.06
 -------

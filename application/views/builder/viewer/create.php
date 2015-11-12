@@ -35,7 +35,7 @@
 </head>
 <body>
 <h2>Create New {controller_class}</h2>
-<form action="<?php echo CONF_BASE_URL; ?>/{controller}/create" method="post">
+<form action="<?php echo CONF_BASE_PATH; ?>/{controller}/create" method="post">
 {content}
 	<input type="submit" id="submit_button" value="Submit">
 </form>

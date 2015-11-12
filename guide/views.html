@@ -102,6 +102,7 @@ http://localhost/phphyppo/index.php/hello
 
 <h1>Assigning variables to the viewer</h1>
 <p>There are several ways to assign variables to the viewer. The first method by using assign() function.</p>
+<p>Method #1</p>
 <pre class="gray">
 class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
 {
@@ -109,6 +110,18 @@ class <span style="color: blue">Hello_Controller</span> extends <span style="col
 	{
 		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">assign</span>(<span style="color: green">'title'</span>, <span style="color: green">'Hello'</span>);
 		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">assign</span>(<span style="color: green">'content'</span>, <span style="color: green">'Hello World'</span>);
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>);
+	}
+}
+</pre>
+<p>Method #2<sup style="color: red">New</sup></p>
+<pre class="gray">
+class <span style="color: blue">Hello_Controller</span> extends <span style="color: blue">AppController</span>
+{
+	function <span style="color: blue">index</span>()
+	{
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">title</span> = <span style="color: green">'hello'</span>;
+		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">content</span> = <span style="color: green">'Hello World'</span>;
 		<span style="color: red">$this</span>-><span style="color: blue">view</span>-><span style="color: blue">display</span>(<span style="color: green">'hello_view'</span>);
 	}
 }

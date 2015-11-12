@@ -4,11 +4,11 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 8.06
  */
 
@@ -21,14 +21,14 @@ if (!defined('BASEDIR'))
  *
  * Template Engine Class
  *
- * @package		phpHyppo
- * @subpackage	Shared Library
+ * @package			phpHyppo
+ * @subpackage		Shared Library
  * @author			Muhammad Hamizi Jaminan
  */
 class Template
 {
-	var $l_delim = '{';
-	var $r_delim = '}';
+	var $delim_l = '{';
+	var $delim_r = '}';
 	var $object;
 
  	/**
@@ -86,8 +86,8 @@ class Template
 	 */
 	public function set_delimiters($l = '{', $r = '}')
 	{
-		$this->l_delim = $l;
-		$this->r_delim = $r;
+		$this->delim_l = $l;
+		$this->delim_r = $r;
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Template
 	 */
 	private function _parse_single($key, $val, $string)
 	{
-		return str_replace($this->l_delim.$key.$this->r_delim, $val, $string);
+		return str_replace($this->delim_l.$key.$this->delim_r, $val, $string);
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Template
 	 */
 	private function _match_pair($string, $variable)
 	{
-		if (!preg_match("|".$this->l_delim . $variable . $this->r_delim."(.+?)".$this->l_delim . '/' . $variable . $this->r_delim."|s", $string, $match))
+		if (!preg_match("|".$this->delim_l . $variable . $this->delim_r."(.+?)".$this->delim_l . '/' . $variable . $this->delim_r."|s", $string, $match))
 			return false;
 
 		return $match;
@@ -165,18 +165,24 @@ class Template
 	 */
 	private function _fetch($filename)
 	{
-		/* check tpl extension */
-		$filepath = APPDIR . 'views' . DS . $filename . '.tpl';
+		// viewer extension lists
+		$extensions = array( 'php', 'html', 'tpl' );
 
-		if (!file_exists($filepath))
-			/* check html extension */
-			$filepath = APPDIR . 'views' . DS . $filename . '.html';
+		// loop over extension lists
+		foreach( $extensions as $ext )
+		{
+			$filepath = APPDIR . 'views' . DS . $filename . '.' . $ext;
 
-		elseif (!file_exists($filepath))
-			/* check php extension */
-			$filepath = APPDIR . 'views' . DS . $filename . '.php';
+			// grab viewer file path
+			if ( file_exists( $filepath ) )
+				break;
+		}
 
-		elseif (file_exists($filepath))
+		// check file path
+		if ( ! file_exists( $filepath ) )
+			return null;
+
+		else
 		{
 			ob_start();
 			include($filepath);
@@ -185,13 +191,8 @@ class Template
 
 			return $results;
 		}
-		else
-		{
-			return null;
-		}
 	}
 }
 
 /* End of template.php */
 /* Location: core/libraries/template.php */
-?>

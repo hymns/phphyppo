@@ -4,11 +4,11 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 8.02
  */
 
@@ -17,8 +17,8 @@
  *
  * application configuration
  *
- * @package	    phpHyppo
- * @subpackage	Application Configuration
+ * @package	    	phpHyppo
+ * @subpackage		Application Configuration
  * @author			Muhammad Hamizi Jaminan
  */
 
@@ -86,6 +86,3 @@ $config['encryption_key'] = 'dffcf53f4a40dcf270b621a631ec7117';
  * Please add your application vars configuration or constant
  * under this section
  */
-
-
-?>

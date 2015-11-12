@@ -4,9 +4,13 @@
  *
  * application builder controller
  *
- * @package	    phpHyppo
- * @subpackage	phpHyppo Application Builder
- * @author			Muhammad Hamizi Jaminan
+ * @package	    	phpHyppo
+ * @subpackage		phpHyppo Application Builder
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
+ * @license			LGPL, see included license file
+ * @link			http://www.phphyppo.org
+ * @since			Version 11.2
  */
  
 class Builder_Controller extends AppController
@@ -20,7 +24,7 @@ class Builder_Controller extends AppController
 	 */
 	public function beforeFilter()
 	{
-		// load uri library
+		// load uri & input library
 		$this->load->library('uri');
 		$this->load->library('input');
 		
@@ -59,10 +63,10 @@ class Builder_Controller extends AppController
 	 *
 	 * @access	public
 	 */
-	public function model()
+	public function model($tablename)
 	{
 		// get model name
-		$tablename = $this->uri->segment(2);
+		$tablename = $this->input->xss_clean($tablename);
 		
 		// get db config
 		$content = $this->builder->get_config();
@@ -87,6 +91,7 @@ class Builder_Controller extends AppController
 		// get controller name & function list
 		$controller = $this->input->post('controller_name', true);
 		$actions = $this->input->post('action', true);
+		$acl = $this->input->post('acl', true);
 		
 		// default controller name
 		if (empty($controller))
@@ -100,6 +105,10 @@ class Builder_Controller extends AppController
 		if (empty($actions))
 			$actions = array('list', 'create');
 		
+		// set default acl value
+		if ($acl === false)
+			$acl = array();
+		
 		// filter out
 		$controller = preg_replace('!\W!', '', $controller);
 		
@@ -112,18 +121,24 @@ class Builder_Controller extends AppController
 		// check ai field
 		$autoincrement = $this->input->post('autoincrement', true);
 		$model['autoincrement'] = $autoincrement !== false ? $autoincrement : null;
+
+		// get db config
+		$content = $this->builder->get_config();
+
+		// show output
+		$this->view->display('builder/deploy', $content);
 		
 		// generate controller
-		$this->_generate_controller($controller, $actions, $model);
+		$this->_generate_controller($controller, $actions, $model, $acl);
 		
 		// generate model
 		$this->_generate_model($controller, $actions, $model);
 		
 		// generate view
 		$this->_generate_view($controller, $actions, $model); 
-		
+				
 		// show notice
-		echo '<br>Your application has been successfully deploy! Access your <a href="' . CONF_BASE_URL . '/' . $controller . '">application here</a>';
+		echo '<br>Your application has been successfully deploy! Access your <a href="' . CONF_BASE_PATH . '/' . $controller . '" target="_blank">application here</a> or build another <a href="' . CONF_BASE_PATH . '/builder">here</a>.';
 	}
 	
 	/**
@@ -136,16 +151,29 @@ class Builder_Controller extends AppController
 	 * @param 	array $actions
 	 * @param	array $model
 	 */
-	private function _generate_controller($controller, $actions, $model)
+	private function _generate_controller($controller, $actions, $model, $acl)
 	{
 		// action lists data
 		$controller_action = '';
+		$acl_load = '';
 		
+		// acl trigger
+		if (!empty($acl) && sizeof($acl) > 0)
+		{
+			$acl_template = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'controller' . DS . 'acl_template.php');
+			$acl_template = explode('@@@@@', $acl_template);
+			$acl_load = (sizeof($acl) > 4) ? $acl_template[0] . $acl_template[1] : $acl_template[0];
+		}
+			
 		// loop over action
 		foreach($actions as $action)
 		{
+			// acl template
+			$acl_check = (!empty($acl) && (sizeof($acl) < 5) && in_array($action, $acl)) ? $acl_template[1] : '';
+			
 			// populate template action
 			$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'controller' . DS . $action . '.php');
+			$data = str_replace('{acl_check}',  $acl_check, $data);				
 			$data = str_replace('{controller}',  $controller, $data);
 			$data = str_replace('{tablename}',  $model['tablename'], $data);
 			
@@ -156,11 +184,12 @@ class Builder_Controller extends AppController
 		// populate template controller
 		$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'controller' . DS . 'controller.php');
 		$data = str_replace('{controller}',  $controller, $data);
+		$data = str_replace('{acl_load}',  $acl_load, $data);		
 		$data = str_replace('{controller_class}',  ucwords($controller), $data);
 		$data = str_replace('{controller_action}',  $controller_action, $data);
 		
 		// show output
-		echo 'Generate code for ' . $controller . ' controller...<br>';
+		echo 'Generate code for ' . $controller . ' controller...<br />';
 		
 		// write controller to application directory
 		$this->_writeout(APPDIR . 'controllers' . DS . $controller . '.php', $data);				
@@ -211,7 +240,7 @@ class Builder_Controller extends AppController
 		$data = str_replace('{model_action}',  $model_action, $data);
 		
 		// show output
-		echo '<br>Generate code for ' . $controller . ' model...<br>';
+		echo '<br>Generate code for ' . $controller . ' model...<br />';
 		
 		// write model to application directory
 		$this->_writeout(APPDIR . 'models' . DS . $controller . '_model.php', $data);		
@@ -237,7 +266,7 @@ class Builder_Controller extends AppController
 			mkdir($directory, 0777);
 		
 		// show output
-		echo '<br>Create directory view for ' . $controller . ' controller...<br>';
+		echo '<br>Create directory view for ' . $controller . ' controller...<br />';
 		
 		// list over action
 		foreach($actions as $action)
@@ -258,10 +287,10 @@ class Builder_Controller extends AppController
 			{					
 				// create header
 				$header = "<tr>\n\t";
-				$header .= "<th>Action</th>\n";
+				$header .= "<th>ACTION</th>\n";
 				foreach($model['fieldnames'] as $head)
 				{
-					$header .= "<th>" . ucwords(str_replace('_', ' ', $head)) . "</th>\n";
+					$header .= "\t<th>" . strtoupper(str_replace('_', ' ', $head)) . "</th>\n";
 				}
 				$header .= "</tr>\n";
 				
@@ -269,19 +298,19 @@ class Builder_Controller extends AppController
 				$content = "<tr>\n\t<td>";
 				
 				// create add link
-				$addlink = in_array('create', $actions) ? '<b><a href="<?php echo CONF_BASE_URL; ?>/{controller}/create">Add New</a></b>' : '';
+				$addlink = in_array('create', $actions) ? '<b><a href="<?php echo CONF_BASE_PATH; ?>/{controller}/create">Add New</a></b>' : '';
 				
 				// create view link
 				if (in_array('view', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/view/<?php echo $row[\'' . $model['primary'] . '\']; ?>">View</a> ';
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/view/<?php echo $row[\'' . $model['primary'] . '\']; ?>">View</a> ';
 				
 				// create update link
 				if (in_array('update', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/update/<?php echo $row[\'' . $model['primary'] . '\']; ?>">Update</a> ';
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/update/<?php echo $row[\'' . $model['primary'] . '\']; ?>">Update</a> ';
 					
 				// create delete link
 				if (in_array('delete', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_URL; ?>/' . $controller . '/delete/<?php echo $row[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/delete/<?php echo $row[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
 					
 				$content .= "&nbsp;</td>\n";
 				
@@ -360,7 +389,7 @@ class Builder_Controller extends AppController
 					{
 						$content .= "\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<textarea name=\"data[" . $field . "]\"  rows=\"5\" cols=\"40\"><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
+							$content .= "\t<textarea name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
 						else
 							$content .= "\t<input type=\"text\" name=\"data[" . $field . "]\" size=\"40\" value=\"<?php echo \$" . $field . "; ?>\"><br />\n\n";
 					}
@@ -373,7 +402,7 @@ class Builder_Controller extends AppController
 			}
 			
 			// show output
-			echo '<br>Generate code for ' . $controller . '  ' . $action . ' action viewer...<br>';
+			echo '<br>Generate code for ' . $controller . '  ' . $action . ' action viewer...<br />';
 			
 			// write the viewer
 			$this->_writeout(APPDIR . 'views' . DS . $controller . DS . $action . '.php', $data);
@@ -409,4 +438,3 @@ class Builder_Controller extends AppController
 
 /* End of builder.php */
 /* Location: /application/controllers/builder.php */
-?>

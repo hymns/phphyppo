@@ -6,9 +6,9 @@
 	 * @access public
 	 * @return none
 	 */
-	public function update()
+	public function update(${tablename}_id)
 	{
-		// load input library
+{acl_check}		// load input library
 		$this->load->library('input');
 		
 		// get input data & filter it
@@ -24,9 +24,6 @@
 			if ($this->{controller}->update($input, $update))
 				redirect('/{controller}/index');
 		}
-		
-		// get specific {tablename} id
-		${tablename}_id = (int) $this->uri->segment('2');
 		
 		// get {controller} data from database
 		$content = $this->{controller}->_data(${tablename}_id);

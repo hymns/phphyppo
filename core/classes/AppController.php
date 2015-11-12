@@ -4,16 +4,16 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 8.02
  */
 
 /* no direct access */
-if (!defined('BASEDIR'))
+if ( ! defined('BASEDIR') )
 	exit;
 
 /**
@@ -21,8 +21,8 @@ if (!defined('BASEDIR'))
  *
  * Class that manage to handle application controller
  *
- * @package		phpHyppo
- * @subpackage	Core Engine
+ * @package			phpHyppo
+ * @subpackage		Core Engine
  * @author			Muhammad Hamizi Jaminan
  */
 class AppController
@@ -35,11 +35,11 @@ class AppController
 	public function __construct()
 	{
 		// set the class instance
-		registry::instance($this);
-		
+		registry::instance( $this );
+
 		// instantiate loader engine
 		$this->load = new AppLoader();
-		
+
 		// instantiate viewer engine
 		$this->view = new AppViewer();
 	}
@@ -59,4 +59,3 @@ class AppController
 
 /* End of AppController.php */
 /* Location: core/classes/AppController.php */
-?>

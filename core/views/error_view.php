@@ -70,7 +70,7 @@ pre {
 <p>This error page generate dynamically by this framework.</p>
 
 <p>To solve this problem, please create filename:</p>
-<code><?php echo $error_msg; ?>.php</code>
+<code><?php echo $error_msg; ?></code>
 
 <p>Then save at:</p>
 <code class='code'><?php echo APPDIR . 'views' . DS; ?></code>
@@ -79,7 +79,7 @@ pre {
 <pre>
 &lt;html&gt;
     &lt;head&gt;
-        &lt;title&gt;&lt;?=<span style="color: red;">$title</span>;?&gt;
+        &lt;title&gt;&lt;?=<span style="color: red;">$title</span>;?&gt;&lt;/title&gt;
     &lt;/head&gt;
     &lt;body&gt;
         &lt;?=<span style="color: red;">$content</span>;&gt;
@@ -89,6 +89,3 @@ pre {
 <p>Note: Usually this view file contain html code blend with php code</p>
 </body>
 </html>
-<?php
-exit;
-?>

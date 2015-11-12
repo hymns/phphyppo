@@ -8,7 +8,7 @@
 	 */
 	public function index()
 	{	
-		// get data from database
+{acl_check}		// get data from database
 		$content['{tablename}'] = $this->{controller}->lists();
 		
 		// bind {controller} content to template & display

@@ -4,11 +4,11 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 9.10
  */
 
@@ -21,75 +21,75 @@ if (!defined('BASEDIR'))
  *
  * Library for infoblast open api (application programming interface) sms gateway
  *
- * @package		phpHyppo
- * @subpackage	Application Library
+ * @package			phpHyppo
+ * @subpackage		Application Library
  * @author			Muhammad Hamizi Jaminan
  */
 
 /**
- //----------------------------------------
- // Example usage #1
- //----------------------------------------
-
- // openapi auth configuration
- $config['username'] = 'infoblast_api_username';
- $config['password'] = 'infoblast_api_password';
-
- // load from controller
- $this->load->library('openapi');
- $this->openapi->initialize($config);
-
- // get sms list - parameters 1 & 2 is optional. [default]
- // parameter 1 sms status to read : [new] / old / all
- // parameter 2 is for delete sms after fetch :  true / [false]
- $text_messages = $this->openapi->get_sms('new', false);
-
- // print sms array
- print_r($text_messages);
-
- //----------------------------------------
- // Example usage #2
- //----------------------------------------
-
- // openapi auth configuration
- $config['username'] = 'infoblast_api_username';
- $config['password'] = 'infoblast_api_password';
-
- // load from controller
- $this->load->library('openapi');
- $this->openapi->initialize($config);
-
- // prepair data
- $data['msgtype']   = 'text';
- $data['to']        = '0123456789'; //separate by comma for multiple reciepient with same text message
- $data['message']   = 'this is short messaging service demo from phphyppo openapi application library';
-
- // send sms to open api
- $response = $this->openapi->send_sms($data);
-
- // print response
- print_r($response);
-
- //----------------------------------------
- // Example usage #3
- //----------------------------------------
-
- // openapi auth configuration
- $config['username'] = 'infoblast_api_username';
- $config['password'] = 'infoblast_api_password';
-
- // load from controller
- $this->load->library('openapi');
- $this->openapi->initialize($config);
-
- // prepair data
- $data['msgid']  = '12345678901234567890';
- 
- // get send status to open api
- $status = $this->openapi->send_status($data);
-
- // print response
- print_r($status);
+ * //----------------------------------------
+ * // Example usage #1
+ * //----------------------------------------
+ *
+ * // openapi auth configuration
+ * $config['username'] = 'infoblast_api_username';
+ * $config['password'] = 'infoblast_api_password';
+ *
+ * // load from controller
+ * $this->load->library('openapi');
+ * $this->openapi->initialize($config);
+ *
+ * // get sms list - parameters 1 & 2 is optional. [default]
+ * // parameter 1 sms status to read : [new] / old / all
+ * // parameter 2 is for delete sms after fetch :  true / [false]
+ * $text_messages = $this->openapi->get_sms('new', false);
+ *
+ * // print sms array
+ * print_r($text_messages);
+ *
+ * //----------------------------------------
+ * // Example usage #2
+ * //----------------------------------------
+ *
+ * // openapi auth configuration
+ * $config['username'] = 'infoblast_api_username';
+ * $config['password'] = 'infoblast_api_password';
+ *
+ * // load from controller
+ * $this->load->library('openapi');
+ * $this->openapi->initialize($config);
+ *
+ * // prepair data
+ * $data['msgtype']   = 'text';
+ * $data['to']        = '0123456789'; //separate by comma for multiple reciepient with same text message
+ * $data['message']   = 'this is short messaging service demo from phphyppo openapi application library';
+ *
+ * // send sms to open api
+ * $response = $this->openapi->send_sms($data);
+ *
+ * // print response
+ * print_r($response);
+ *
+ * //----------------------------------------
+ * // Example usage #3
+ * //----------------------------------------
+ *
+ * // openapi auth configuration
+ * $config['username'] = 'infoblast_api_username';
+ * $config['password'] = 'infoblast_api_password';
+ *
+ * // load from controller
+ * $this->load->library('openapi');
+ * $this->openapi->initialize($config);
+ *
+ * // prepair data
+ * $data['msgid']  = '12345678901234567890';
+ * 
+ * // get send status to open api
+ * $status = $this->openapi->send_status($data);
+ *
+ * // print response
+ * print_r($status);
  */
 
 class OpenAPI
@@ -134,7 +134,7 @@ class OpenAPI
 	private $openapi_url_view 	= 'http://www.infoblast.com.my/openapi/getmsgdetail.php';
 	private $openapi_url_delete	= 'http://www.infoblast.com.my/openapi/delmsg.php';
 	private $openapi_url_send 	= 'http://www.infoblast.com.my/openapi/sendmsg.php';
-	private $openapi_url_status 	= 'http://www.infoblast.com.my/openapi/getsendstatus.php';
+	private $openapi_url_status = 'http://www.infoblast.com.my/openapi/getsendstatus.php';
 
  	/**
 	 * class constructor
@@ -143,6 +143,7 @@ class OpenAPI
 	 */
 	function __construct()
 	{
+
 	}
 
 	/**
@@ -159,7 +160,7 @@ class OpenAPI
 		// extract configuration array
 		foreach($config as $key => $val)
 			$this->$key = $val;
-		
+
 		// auth user session
 		$this->login_session = $this->_auth();
 	}
@@ -179,20 +180,20 @@ class OpenAPI
 		// no session - halt
 		if ($this->login_session === null)
 			return null;
-		
+
 		// openapi session & sms data
 		$data['sessionid'] = $this->login_session;
 		$data['status'] = $status;
-		
+
 		// fetch sms list from openapi server
 		$content = $this->_fetch_process($this->openapi_url_spool, $data);
-		
+
 		// reset status vars
 		unset($data['status']);
-		
+
 		// build sms listing
 		$sms_list = $this->_build_list($content);
-		
+
 		// count sms listing
 		if (sizeof($sms_list) > 0)
 		{
@@ -201,13 +202,15 @@ class OpenAPI
 			{
 				// prepair data
 				$data['uid'] = $num;
-				
+
 				// fetch sms detail from openapi server
 				$content = $this->_fetch_process($this->openapi_url_view, $data);
 				
-				// convert xml  data to array object
-				$object = @simplexml_load_string($content);
-				
+				// update using dom
+				$dom = new DomDocument('1.0', 'utf-8');
+				$dom->loadXML($content);
+				$object = simplexml_import_dom($dom->documentElement);
+
 				// make sure no broken xml data
 				if (is_object($object))
 				{
@@ -219,7 +222,7 @@ class OpenAPI
 					$record[$num]['subject'] = (string) $object->msginfo->subject;
 					$record[$num]['msgtype'] = (string) $object->msginfo->msgtype;
 					$record[$num]['message'] = (string) $object->msginfo->message;
-					
+
 					// delete after fetch?
 					if ($delete === true)
 						$this->_fetch_process($this->openapi_url_delete, $data);
@@ -249,21 +252,20 @@ class OpenAPI
 		// no session - halt
 		if ($this->login_session === null)
 			return null;
-		
+
 		// merge session id with text message data
 		$tmp = array('sessionid' => $this->login_session);
 		$data = array_merge($tmp, $data);
-		
+
 		// fetch sms send status from openapi server
 		$content = $this->_fetch_process($this->openapi_url_send, $data);
-		
+
 		// logging out after fetching
 		$this->_fetch_process($this->openapi_url_logout, $tmp);
-		
+
 		// return sending status
 		return $this->_status($content);
 	}
-
 
 	/**
 	 * send_status
@@ -280,14 +282,14 @@ class OpenAPI
 		// no session - halt
 		if ($this->login_session === null)
 			return null;
-		
+
 		// merge session id with text message data
 		$tmp = array('sessionid' => $this->login_session);
 		$data = array_merge($tmp, $data);
 		
 		// fetch sms send status from openapi server
 		$content = $this->_fetch_process($this->openapi_url_status, $data);
-		
+
 		// logging out after fetching
 		$this->_fetch_process($this->openapi_url_logout, $tmp);
 		
@@ -330,13 +332,13 @@ class OpenAPI
 		// prepair auth username & password
 		$data['username'] = $this->username;
 		$data['password'] = sha1($this->password);
-		
+
 		// fetch auth session data
 		$content = $this->_fetch_process($this->openapi_url_login, $data);
-		
+
 		// convert xml data to array object
 		$object = @simplexml_load_string($content);
-		
+
 		// return auth data
 		return (is_object($object) && isset($object->sessionid)) ? (string) $object->sessionid : null;
 	}
@@ -356,10 +358,10 @@ class OpenAPI
 	{
 		// convert xml data to array object
 		$object = @simplexml_load_string($xml);
-		
+
 		// count total object record set
 		$total = sizeof($object);
-		
+
 		// we got an record set
 		if ($total > 0)
 		{
@@ -374,11 +376,11 @@ class OpenAPI
 						$record[] = (int) $val;
 				}
 			}
-			
+
 			// return record set
 			return $record;
 		}
-		
+
 		// no data
 		else
 			return null;
@@ -404,26 +406,26 @@ class OpenAPI
 										'content' => http_build_query($data)
 										)
 		                );
-		
+
 		// assign custom header
 		if ($optional_header !== null)
 			$param['http']['header'] = $optional_header;
-		
+
 		// create context stream
 		$context = stream_context_create($param);
 		$handler = fopen($url, 'rb', false, $context);
-		
+
 		// fetch url failed
 		if (!$handler)
 			throw new Exception('Unable to connect to ' . $url);
-		
+
 		// fetch content data
 		$content = stream_get_contents($handler);
-		
+
 		// reading content data failed
 		if ($content === false)
 			throw new Exception('Unable to read data from ' . $url);
-		
+
 		return $content;
 	}
 
@@ -455,12 +457,11 @@ class OpenAPI
 			$response['status'] =	$status = trim($status);
 			$response['messageid'] = (string) $object->messageid;
 		}
-		
+
 		// return status
 		return $response;
 	}
 }
 
 /* End of openapi.php */
-/* Location:  core/libraries/openapi.php */
-?>
+/* Location: core/libraries/openapi.php */

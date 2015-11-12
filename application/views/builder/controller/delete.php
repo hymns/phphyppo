@@ -6,12 +6,9 @@
 	 * @access public
 	 * @return none
 	 */
-	public function delete()
+	public function delete(${tablename}_id)
 	{
-		// get specific {tablename} id
-		${tablename}_id = (int) $this->uri->segment('2');
-		
-		// remove {controller} from database
+{acl_check}		// remove {controller} from database
 		if ($this->{controller}->remove(${tablename}_id))
 			redirect('/{controller}/index');
 	}

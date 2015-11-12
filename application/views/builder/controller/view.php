@@ -6,12 +6,9 @@
 	 * @access public
 	 * @return none
 	 */
-	public function view()
+	public function view(${tablename}_id)
 	{
-		// get the specific {tablename} id
-		${tablename}_id = (int) $this->uri->segment('2');
-		
-		// get {controller} data from database
+{acl_check}		// get {controller} data from database
 		$content = $this->{controller}->view(${tablename}_id);
 		
 		// bind {controller} content to template & display

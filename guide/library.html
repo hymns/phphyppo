@@ -158,6 +158,23 @@ class <span style="color: blue;">Hello_Controller</span> extends <span style="co
 	}
 }
 </pre>
+
+<h1>Loading a bridge<sup style="color: red">New</sup></h1>
+<p>Bridge Loader is function can be use to load another controller cross current controller.</p>
+<pre class="gray">
+class <span style="color: blue;">Hello_Controller</span> extends <span style="color: blue;">AppController</span>
+{
+	function <span style="color: blue;">index</span>()
+	{		
+		<span style="color: red;">$output</span> = <span style="color: red;">$this</span>-><span style="color: blue;">load</span>-><span style="color: blue;">bridge</span>(<span style="color: green;">'/other_controller/function_name'</span>);
+
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">assign</span>(<span style="color: green;">'output'</span>, <span style="color: red;">$output</span>);
+		<span style="color: red;">$this</span>-><span style="color: blue;">view</span>-><span style="color: blue;">display</span>(<span style="color: green;">'hello_view'</span>);
+	}
+}
+
+</pre>
+
 <p>&nbsp;</p>
 <p><a href="autoload.html">Autoloading Libraries &gt;</a></p>
 <p>&nbsp;</p>

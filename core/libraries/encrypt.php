@@ -4,14 +4,19 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 8.02
  */
 
+/**
+ * NOTE: This library is mod & taken from CodeIgniter Library with 
+ * permissions for compatibility for this framework release. all credits
+ * belongs to CodeIgniter Author / Teams.
+ */
 
 /* no direct access */
 if (!defined('BASEDIR'))
@@ -22,21 +27,16 @@ if (!defined('BASEDIR'))
  *
  * Encryption Class
  *
- * @package		phpHyppo
- * @subpackage	Shared Library
+ * @package			phpHyppo
+ * @subpackage		Shared Library
  * @author			Muhammad Hamizi Jaminan
  */
 
-/**
- * Note: This library is mod & taken from CI Library
- * for compatibility for this framework release.
- * all credits belong to CodeIgniter Author.
- */
 class Encrypt
 {
 	var $registry;
 	var $encryption_key	    = '';
-	var $_hash_type				= 'sha1';
+	var $_hash_type			= 'sha1';
 
 	/**
 	 * Constructor
@@ -222,4 +222,3 @@ class Encrypt
 
 /* End of file encrypt.php */
 /* Location: core/libraries/encrypt.php */
-?>

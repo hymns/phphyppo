@@ -4,8 +4,11 @@
  *
  * {controller} application controller
  *
- * @package	phpHyppo
- * @author	phpHyppo Application Builder
+ * @package		phpHyppo
+ * @author		phpHyppo Application Builder
+ * @license		LGPL, see included license file
+ * @link		http://www.phphyppo.org
+ * @since		Version 8.02
  */
  
 class {controller_class}_Controller extends AppController
@@ -19,7 +22,7 @@ class {controller_class}_Controller extends AppController
 	 */
 	public function beforeFilter()
 	{
-		// load uri library
+{acl_load}		// load uri library
 		$this->load->library('uri');
 		
 		// load {controller} model alias as {controller}
@@ -31,4 +34,3 @@ class {controller_class}_Controller extends AppController
 
 /* End of {controller}.php */
 /* Location: /application/controllers/{controller}.php */
-?>

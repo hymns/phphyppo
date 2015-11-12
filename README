@@ -5,16 +5,16 @@ AUTHOR:
     Muhammad Hamizi Jaminan (hymns [at] time [dot] net [dot] my)
   
 VERSION:
-    10.7
+    15.11
 
 DATE:
-    July 20th, 2010
+    Nov 12th, 2015
 
 WEBSITE:
-    http://www.phphyppo.com/framework/
+    http://www.phphyppo.org
 
 DOWNLOAD:
-    http://www.phphyppo.com/framework/download
+    http://www.phphyppo.org/download
 
 DESCRIPTION:
 
@@ -26,7 +26,8 @@ DESCRIPTION:
     (Controller). With very little extras bundled in, this framework is
     probaly fast and flexible. Some design aspects and terminology of phpHyppo
     have been inspired by other famous PHP frameworks, although the core code
-    is 100% original.
+    is 100% original except the part of core libraries supply taken from
+    CodeIgniter for compatibility test later version will remove.
 
     What phpHyppo is NOT
 
@@ -58,7 +59,7 @@ FEATURES:
 
 
 COPYRIGHT:
-    Copyright(c) 2008-2010 Green Apple Software. All rights reserved.
+    Copyright(c) 2008-2011 Green Apple Software. All rights reserved.
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Lesser General Public License as published by

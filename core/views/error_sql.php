@@ -80,6 +80,3 @@ pre {
 
 </body>
 </html>
-<?php
-exit;
-?>

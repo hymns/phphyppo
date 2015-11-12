@@ -4,12 +4,18 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.org
  * @since			Version 9.07
+ */
+
+/**
+ * NOTE: This library is mod & taken from CodeIgniter Library with 
+ * permissions for compatibility for this framework release. all credits
+ * belongs to CodeIgniter Author / Teams.
  */
 
 /* no direct access */
@@ -21,36 +27,31 @@ if (!defined('BASEDIR'))
  *
  * Session Management Class
  *
- * @package		phpHyppo
- * @subpackage	Shared Library
+ * @package			phpHyppo
+ * @subpackage		Shared Library
  * @author			Muhammad Hamizi Jaminan
  */
 
-/**
- * Note: This library is mod & taken from CI Library
- * for compatibility for this framework release.
- * all credits belong to CodeIgniter Author.
- */
 class Session
 {
 	// session variable
-	var $session_expiration					= 7200;
-	var $session_time_to_update		= 300;
-	var $session_match_ip					= true;
+	var $session_expiration				= 7200;
+	var $session_time_to_update			= 300;
+	var $session_match_ip				= true;
 	var $session_match_useragent    	= true;
 	var $session_encrypt_cookie		    = true;
 	var $session_cookie_name		    = 'phphyppo';
 
 	// cookie variable
-	var $cookie_prefix							= '';
-	var $cookie_path							= '/';
-	var $cookie_domain						= '';
-	var $encryption_key						= '';
+	var $cookie_prefix					= '';
+	var $cookie_path					= '/';
+	var $cookie_domain					= '';
+	var $encryption_key					= '';
 
 	// local variable
 	var $registry;
-	var $userdata									= array();
-	var $time_reference						= 'local';
+	var $userdata						= array();
+	var $time_reference					= 'local';
 	var $now;
 
 	/**
@@ -431,4 +432,3 @@ class Session
 
 /* End of session.php */
 /* Location: core/libraries/session.php */
-?>

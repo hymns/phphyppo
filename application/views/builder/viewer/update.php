@@ -35,7 +35,7 @@
 </head>
 <body>
 <h2>Update {controller_class}</h2>
-<form action="<?php echo CONF_BASE_URL; ?>/{controller}/update" method="post">
+<form action="<?php echo CONF_BASE_PATH; ?>/{controller}/update" method="post">
 {content}
 	<input type="submit" id="submit_button" value="Update">
 </form>

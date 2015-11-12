@@ -75,11 +75,11 @@ h1 {
 	<p>The Controller file path for this page is :</p>
 	<code class='orange'>/application/controllers/hello.php</code>
 
-	<p>See the framework <a href="<?php echo CONF_BASE_URL; ?>/guide/index.html">documentation</a> or try the application <a href="<?php echo CONF_BASE_URL; ?>/builder/index">builder</a>.</p>
+	<p>See the framework <a href="guide/index.html">documentation</a>.</p>
 	<p>&nbsp;</p>
-	<p>Copyright 2008-2010 &copy; Green Apple Software. All right reserved.</p>
-	<a href="http://www.phphyppo.com/framework" target="_blank"><img src="<?php echo CONF_BASE_URL; ?>/guide/images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
-	<a href="http://www.php.net" target="_blank"><img src="<?php echo CONF_BASE_URL; ?>/guide/images/php5-logo.png" title="Powered by PHP" border="0" /></a>
-	<a href="http://www.mysql.com" target="_blank"><img src="<?php echo CONF_BASE_URL; ?>/guide/images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
+	<p>Copyright 2009 &copy; Green Apple Software. All right reserved.</p>
+	<a href="http://www.phphyppo.com/framework" target="_blank"><img src="guide/images/mvc-logo.png" title="Powered by phpHyppo Framework" border="0" /></a>
+	<a href="http://www.php.net" target="_blank"><img src="guide/images/php5-logo.png" title="Powered by PHP" border="0" /></a>
+	<a href="http://www.mysql.com" target="_blank"><img src="guide/images/mysql-logo.png" title="Powered by MySQL" border="0" /></a>
 </body>
 </html>

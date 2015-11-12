@@ -1,5 +1,5 @@
 	/**
-	 * index
+	 * create
 	 *
 	 * create / add new {controller}
 	 *
@@ -7,8 +7,8 @@
 	 * @return none
 	 */
 	public function create()
-	{
-		// load input library
+	{	
+{acl_check}		// load input library
 		$this->load->library('input');
 		
 		// get input data & filter it

@@ -4,12 +4,18 @@
  *
  * An open source MVC application framework for PHP 5.1+
  *
- * @package		phpHyppo
- * @author			Muhammad Hamizi Jaminan, hymns [at] time [dot] net [dot] my
- * @copyright		Copyright (c) 2008 - 2010, Green Apple Software.
+ * @package			phpHyppo
+ * @author			Muhammad Hamizi Jaminan <hymns@time.net.my>
+ * @copyright		Copyright (c) 2008 - 2014, Green Apple Software.
  * @license			LGPL, see included license file
- * @link				http://www.phphyppo.com
+ * @link			http://www.phphyppo.com
  * @since			Version 8.02
+ */
+
+/**
+ * NOTE: This library is mod & taken from CodeIgniter Library with 
+ * permissions for compatibility for this framework release. all credits
+ * belongs to CodeIgniter Author / Teams.
  */
 
 /* no direct access */
@@ -21,48 +27,44 @@ if (!defined('BASEDIR'))
  *
  * Pre-processes global input data for security
  *
- * @package		phpHyppo
- * @subpackage	Shared Library
+ * @package			phpHyppo
+ * @subpackage		Shared Library
  * @author			Muhammad Hamizi Jaminan
  */
 
 /**
- Example Usage:
-
- $this->load->library('input');
-
- # $_GET['index_key']
- echo $this->input->get('index_key');
-
- #$_POST['index_key']
- echo $this->input->post('index_key');
-
- # $_POST['index_key'] or $_GET['index_key']
- echo $this->input->request('index_key');
-
- # $_SERVER['index_key']
- echo $this->input->server('index_key');
-
- # $_COOKIE['index_key']
- echo $this->input->cookie('index_key');
-
-# $_FILES['index_key']
- echo $this->input->files('index_key');
-
- # get user ip address
- echo $this->input->ip_address();
-
- # check valid_ip return TRUE or FALSE
- echo ($this->input->valid_ip('127.0.0.1')) ? 'VALID' : 'INVALID';
-
- # get browser name
- echo $this->input->user_agent();
-
-**
-** Note: This library is mod & taken from CI Library
-** for compatibility for this framework release.
-** all credits belong to CodeIgniter Author. 
-*/
+ * Example Usage:
+ *
+ * $this->load->library('input');
+ *
+ * $_GET['index_key']
+ * echo $this->input->get('index_key');
+ *
+ * $_POST['index_key']
+ * echo $this->input->post('index_key');
+ *
+ * $_POST['index_key'] or $_GET['index_key']
+ * echo $this->input->request('index_key');
+ *
+ * $_SERVER['index_key']
+ * echo $this->input->server('index_key');
+ *
+ * $_COOKIE['index_key']
+ * echo $this->input->cookie('index_key');
+ *
+ * $_FILES['index_key']
+ * echo $this->input->files('index_key');
+ *
+ * get user ip address
+ * echo $this->input->ip_address();
+ *
+ * check valid_ip return TRUE or FALSE
+ * echo ($this->input->valid_ip('127.0.0.1')) ? 'VALID' : 'INVALID';
+ *
+ * get browser name
+ * echo $this->input->user_agent();
+ *
+ */
 class input 
 {
 	var $allow_get_array	= TRUE;
@@ -970,4 +972,3 @@ class input
 
 /* End of file input.php */
 /* Location: core/libraries/input.php */
-?>
