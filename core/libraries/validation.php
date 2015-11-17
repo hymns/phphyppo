@@ -675,6 +675,19 @@ class Validation
     }
 
     /**
+     * Get an array of slit word from cammel case.
+     *
+     * @param string $string
+     * @return mixed
+     */
+    public function splitCamelCase($string)
+    {
+        preg_match_all('/((?:^|[A-Z])[a-z]+)/', $string, $matches);
+
+        return $matches;
+    }
+
+    /**
      * Generate a random string of specified length from a set of specified characters
      *
      * @param integer $size Default size is 30 characters.

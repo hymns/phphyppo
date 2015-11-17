@@ -12,3 +12,4 @@
 		// get data details
 		return $this->_data(${tablename}_id);
 	}
+

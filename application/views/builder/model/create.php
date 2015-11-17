@@ -12,3 +12,4 @@
 		// insert new data to table {tablename}
 		return $this->db->insert('{tablename}', $input);
 	}
+

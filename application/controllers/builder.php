@@ -136,7 +136,7 @@ class Builder_Controller extends AppController
 		
 		// generate view
 		$this->_generate_view($controller, $actions, $model); 
-				
+
 		// show notice
 		echo '<br>Your application has been successfully deploy! Access your <a href="' . CONF_BASE_PATH . '/' . $controller . '" target="_blank">application here</a> or build another <a href="' . CONF_BASE_PATH . '/builder">here</a>.';
 	}
@@ -287,37 +287,40 @@ class Builder_Controller extends AppController
 			{					
 				// create header
 				$header = "<tr>\n\t";
-				$header .= "<th>ACTION</th>\n";
 				foreach($model['fieldnames'] as $head)
 				{
 					$header .= "\t<th>" . strtoupper(str_replace('_', ' ', $head)) . "</th>\n";
 				}
+				$header .= "<th>ACTION</th>\n";
 				$header .= "</tr>\n";
-				
-				// create row content
-				$content = "<tr>\n\t<td>";
-				
+
 				// create add link
-				$addlink = in_array('create', $actions) ? '<b><a href="<?php echo CONF_BASE_PATH; ?>/{controller}/create">Add New</a></b>' : '';
-				
-				// create view link
-				if (in_array('view', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/view/<?php echo $row[\'' . $model['primary'] . '\']; ?>">View</a> ';
-				
-				// create update link
-				if (in_array('update', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/update/<?php echo $row[\'' . $model['primary'] . '\']; ?>">Update</a> ';
-					
-				// create delete link
-				if (in_array('delete', $actions))
-					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/delete/<?php echo $row[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')">Delete</a>';
-					
-				$content .= "&nbsp;</td>\n";
+				$addlink = in_array('create', $actions) ? '<b><a href="<?php echo CONF_BASE_PATH; ?>/{controller}/create" class="btn btn-success">Add New</a></b>' : '';
+								
+				// create row content
+				$content = "<tr>";
 				
 				// loop over fieldname
 				foreach($fieldnames as $field)
 					$content .= "\t<td><?php echo \$row['" . $field . "']; ?></td>\n";
+
+				// action link
+				$content .= "\n\t<td>";
+
+				// create view link
+				if (in_array('view', $actions))
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/view/<?php echo $row[\'' . $model['primary'] . '\']; ?>" class="btn btn-info">View</a> ';
 				
+				// create update link
+				if (in_array('update', $actions))
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/update/<?php echo $row[\'' . $model['primary'] . '\']; ?>" class="btn btn-warning">Update</a> ';
+					
+				// create delete link
+				if (in_array('delete', $actions))
+					$content .= '<a href="<?php echo CONF_BASE_PATH; ?>/' . $controller . '/delete/<?php echo $row[\'' . $model['primary'] . '\']; ?>" onclick="return confirm(\'Are you sure to delete this data?\')" class="btn btn-danger">Delete</a>';
+					
+				$content .= "</td>\n";
+
 				// close row content
 				$content .= "</tr>\n";
 				
@@ -338,8 +341,10 @@ class Builder_Controller extends AppController
 				// loop over fieldnames
 				foreach($fieldnames as $field)
 				{
-					$content .= "<p><b>" . ucwords(str_replace('_', ' ', $field)) . "</b><br />\n";
-					$content .= "<?php echo \$" . $field . "; ?></p>\n\n";
+					$content .= "<div class=\"row\">\n";
+					$content .= "\t<div class=\"col-md-3\">" . ucwords(str_replace('_', ' ', $field)) . ":</div>\n";
+					$content .= "\t<div class=\"col-md-9\"><?php echo \$" . $field . "; ?></div>\n";
+					$content .= "</div>\n";
 				}
 				
 				// populate view template
@@ -358,11 +363,13 @@ class Builder_Controller extends AppController
 				{
 					if (empty($model['autoincrement']) || $model['autoincrement'] != $field)
 					{
-						$content .= "\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
+						$content .= "<div class=\"form-group\">";
+						$content .= "\n\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . ":</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<textarea name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"></textarea><br />\n\n";
+							$content .= "\n\t<textarea class=\"form-control\" name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"></textarea>\n";
 						else
-							$content .= "\t<input type=\"text\" name=\"data[" . $field . "]\" size=\"40\"><br />\n\n";
+							$content .= "\t<input type=\"text\" class=\"form-control\" name=\"data[" . $field . "]\" size=\"40\">\n";
+						$content .= "</div>\n";
 					}
 				}
 				
@@ -387,11 +394,13 @@ class Builder_Controller extends AppController
 					// standard form
 					else
 					{
-						$content .= "\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
+						$content .= "<div class=\"form-group\">";
+						$content .= "\n\t<label for=\"data[" . $field . "]\">" . ucwords(str_replace('_', ' ', $field)) . "</label>\n";
 						if (preg_match("/text/i", $types[$field]))
-							$content .= "\t<textarea name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"><?php echo htmlentities(\$" . $field . "); ?></textarea><br />\n\n";
+							$content .= "\t<textarea class=\"form-control\" name=\"data[" . $field . "]\" rows=\"5\" cols=\"40\"><?php echo htmlentities(\$" . $field . "); ?></textarea>\n";
 						else
-							$content .= "\t<input type=\"text\" name=\"data[" . $field . "]\" size=\"40\" value=\"<?php echo \$" . $field . "; ?>\"><br />\n\n";
+							$content .= "\t<input class=\"form-control\" type=\"text\" name=\"data[" . $field . "]\" size=\"40\" value=\"<?php echo \$" . $field . "; ?>\">\n";
+						$content .= "</div>\n";
 					}
 				}
 				

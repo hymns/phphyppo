@@ -112,19 +112,21 @@ function __autoload( $classname )
  * Grab url segment, split the controller & method name
  *
  */
-$uri_segment = !empty( $_SERVER[CONF_URI_PROTOCOL] ) ? explode( '/', $_SERVER[CONF_URI_PROTOCOL] ) : null;
+$uri_segment = !empty( $_SERVER[CONF_URI_PROTOCOL] ) ? explode( '/', ltrim($_SERVER[CONF_URI_PROTOCOL], '/') ) : null;
 
 // get controller & method
-list( , $controller_name, $controller_event) = $uri_segment;
+list($controller_name, $controller_event) = $uri_segment;
 
-// grab controller name
+// grab controller name & event
 $controller_name = !empty( $controller_name ) ? preg_replace( '!\W!', '', $controller_name ) : $route['default_controller'];
-
-// grab controller method
 $controller_event = !empty( $controller_event ) ? preg_replace( '!\W!', '', $controller_event ) : 'index';
 
 // grab user params
-$controller_params = array_slice($uri_segment, 3);
+$controller_params = array_slice($uri_segment, 2);
+
+// overide default controller & event
+if ( $route['default_controller'] == $controller_name AND $controller_event == 'index' )
+	$controller_params = array();
 
 /*
  * ------------------------------------------------------
@@ -134,17 +136,17 @@ $controller_params = array_slice($uri_segment, 3);
 if ( ! empty( $route[$controller_name] ) )
 {
 	// extract routing (mapping)
-	$route_segment = explode( '/', $route[$controller_name] );
+	$route_segment = explode( '/', ltrim($route[$controller_name], '/') );
 
 	// get controller & method
-	list( , $route_controller_name, $route_controller_event) = $route_segment;
+	list($route_controller_name, $route_controller_event) = $route_segment;
 
 	// re-map to original controller & event
 	$controller_name = !empty( $route_controller_name ) ? $route_controller_name : $controller_name;
 	$controller_event = !empty( $route_controller_event ) ? $route_controller_event : $controller_event;
 
 	// re-map user params
-	$controller_params = array_slice($uri_segment, 2);	
+	$controller_params = array_slice($uri_segment, 1);	
 }
 
 // define controller & method widely

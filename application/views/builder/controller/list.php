@@ -11,7 +11,10 @@
 {acl_check}		// get data from database
 		$content['{tablename}'] = $this->{controller}->lists();
 		
-		// bind {controller} content to template & display
-		$this->view->display('{controller}/list', $content);
+		// capture {controller} content to template
+		$data['content'] = $this->view->fetch('{controller}/list', $content);
+
+		// bind content to template
+		$this->view->display('example_layout', $data);
 	}
 

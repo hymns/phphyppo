@@ -28,7 +28,10 @@
 		// get {controller} data from database
 		$content = $this->{controller}->_data(${tablename}_id);
 		
-		// bind {controller} data to form & display
-		$this->view->display('{controller}/update', $content);
+		// bind {controller} data to template
+		$data['content'] = $this->view->fetch('{controller}/update', $content);
+
+		// bind content to template
+		$this->view->display('example_layout', $data);		
 	}
 

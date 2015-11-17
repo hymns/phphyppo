@@ -16,4 +16,4 @@
 		// update data on table {tablename}
 		return $this->db->update('{tablename}', $input);
 	}
-	
+

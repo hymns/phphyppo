@@ -15,3 +15,4 @@
 		// from table {tablename}
 		return $this->db->find('{tablename}');	
 	}
+

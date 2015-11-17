@@ -22,7 +22,10 @@
 				redirect('/{controller}/index');
 		}
 		
-		// display form
-		$this->view->display('{controller}/create');
+		// capture form
+		$data['content'] = $this->view->fetch('{controller}/create');
+
+		// bind content to template
+		$this->view->display('example_layout', $data);		
 	}
 

@@ -22,10 +22,7 @@ class {controller_class}_Controller extends AppController
 	 */
 	public function beforeFilter()
 	{
-{acl_load}		// load uri library
-		$this->load->library('uri');
-		
-		// load {controller} model alias as {controller}
+{acl_load}		// load {controller} model alias as {controller}
 		$this->load->model('{controller}_model', '{controller}');		
 	}
 	
