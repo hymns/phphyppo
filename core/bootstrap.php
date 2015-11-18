@@ -122,11 +122,7 @@ $controller_name = !empty( $controller_name ) ? preg_replace( '!\W!', '', $contr
 $controller_event = !empty( $controller_event ) ? preg_replace( '!\W!', '', $controller_event ) : 'index';
 
 // grab user params
-$controller_params = array_slice($uri_segment, 2);
-
-// overide default controller & event
-if ( $route['default_controller'] == $controller_name AND $controller_event == 'index' )
-	$controller_params = array();
+$controller_params = sizeof($uri_segment) > 1 ? array_slice($uri_segment, 2) : array();
 
 /*
  * ------------------------------------------------------
@@ -146,7 +142,7 @@ if ( ! empty( $route[$controller_name] ) )
 	$controller_event = !empty( $route_controller_event ) ? $route_controller_event : $controller_event;
 
 	// re-map user params
-	$controller_params = array_slice($uri_segment, 1);	
+	$controller_params = sizeof($uri_segment) > 0 ? array_slice($uri_segment, 1) : array();
 }
 
 // define controller & method widely
