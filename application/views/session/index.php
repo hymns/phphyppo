@@ -1,0 +1,1 @@
+<p>Hello <strong><?=$username;?></strong>! (<a href="<?php echo CONF_BASE_PATH; ?>/session/logout">Logout</a>)</p>

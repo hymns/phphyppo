@@ -26,7 +26,7 @@
 </head>
 <body>
 <h2>Authorize Area</h2>
-<form action="<?php echo CONF_BASE_PATH; ?>/users/login" method="post">
+<form action="<?php echo CONF_BASE_PATH; ?>/session/login" method="post">
 <?php if (!empty($error)) echo '<span style="color: red;">' . $error . '</span>'; ?>
 	<div>
 	<label for="data[username]">Username</label>

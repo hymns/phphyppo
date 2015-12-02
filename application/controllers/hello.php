@@ -14,14 +14,6 @@ class Hello_Controller extends AppController
 	{
 		$this->view->display('hello_view');
 	}
-
-	function oracle()
-	{
-		$db = $this->load->database('oracle_db');
-		
-		$test = $db->query_all('select tablespace_name, table_name from user_tables');
-		print_r($test);
-	}
 }
 
 /* End of hello.php */

@@ -1,7 +1,7 @@
 		// load authentication library
-		$this->load->library('authentication', 'auth');
+		$this->load->library('acl');
 
-@@@@@		// check authentication
-		if (!$this->auth->is_logged_in())
-			redirect('/users/login');
+@@@@@		// check access role
+		if ( ! $this->acl->is_allowed('{controller}', '{action}') )
+			redirect('/session/login');
 

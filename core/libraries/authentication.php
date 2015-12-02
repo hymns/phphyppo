@@ -200,8 +200,8 @@ class Authentication
 		$this->db->query("CREATE TABLE IF NOT EXISTS `users` (
 							  `user_id` int(11) NOT NULL AUTO_INCREMENT,
 							  `group_id` int(11) NOT NULL,
-							  `username` varchar(50) NOT NULL,
-							  `password` varchar(50) NOT NULL,
+							  `username` varchar(40) NOT NULL,
+							  `password` varchar(40) NOT NULL,
 							  `first_name` varchar(50) NOT NULL,
 							  `last_name` varchar(50) NOT NULL,
 							  `lastlogin` datetime NOT NULL,

@@ -15,18 +15,20 @@
 		$input = $this->input->post('data', true);
 		
 		// data exists
-		if ($input !== false)
+		if ( $input !== false )
 		{
 			// get specific update
 			$update = $this->input->post('update', true);
 			
 			// update data on database
-			if ($this->{controller}->update($input, $update))
-				redirect('/{controller}/index');
+			$this->{controller}->update($input, $update);
+			
+			// redirect to index
+			redirect('/{controller}/index');
 		}
 		
 		// get {controller} data from database
-		$content = $this->{controller}->_data(${tablename}_id);
+		$content = $this->{controller}->view(${tablename}_id);
 		
 		// bind {controller} data to template
 		$data['content'] = $this->view->fetch('{controller}/update', $content);

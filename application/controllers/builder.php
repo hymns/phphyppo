@@ -27,6 +27,7 @@ class Builder_Controller extends AppController
 		// load uri & input library
 		$this->load->library('uri');
 		$this->load->library('input');
+		$this->load->library('acl');
 		
 		// load builder model alias as builder
 		$this->load->model('builder_model', 'builder');		
@@ -94,20 +95,26 @@ class Builder_Controller extends AppController
 		$acl = $this->input->post('acl', true);
 		
 		// default controller name
-		if (empty($controller))
+		if ( empty($controller) )
 			exit('Please enter controller name (characters only)');
 		
 		// check reserve name
-		if ($controller == 'builder')
+		if ( $controller == 'builder' )
 			exit('Cannot use reserved controller name "builder"');
 		
 		// default value for action
-		if (empty($actions))
+		if ( empty($actions) )
 			$actions = array('list', 'create');
 		
 		// set default acl value
-		if ($acl === false)
+		if ( $acl === false )
 			$acl = array();
+		
+		// build acl
+		else
+		{
+			$this->acl->initiate();
+		}
 		
 		// filter out
 		$controller = preg_replace('!\W!', '', $controller);
@@ -137,6 +144,9 @@ class Builder_Controller extends AppController
 		// generate view
 		$this->_generate_view($controller, $actions, $model); 
 
+		// generate role
+		$this->_generate_role($controller, $actions, $acl); 
+
 		// show notice
 		echo '<br>Your application has been successfully deploy! Access your <a href="' . CONF_BASE_PATH . '/' . $controller . '" target="_blank">application here</a> or build another <a href="' . CONF_BASE_PATH . '/builder">here</a>.';
 	}
@@ -158,11 +168,11 @@ class Builder_Controller extends AppController
 		$acl_load = '';
 		
 		// acl trigger
-		if (!empty($acl) && sizeof($acl) > 0)
+		if ( ! empty($acl) AND sizeof($acl) > 0 )
 		{
 			$acl_template = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'controller' . DS . 'acl_template.php');
 			$acl_template = explode('@@@@@', $acl_template);
-			$acl_load = (sizeof($acl) > 4) ? $acl_template[0] . $acl_template[1] : $acl_template[0];
+			$acl_load = (sizeof($acl) > 4) ? $acl_template[0] . str_replace('{action}', '*', $acl_template[1]) : $acl_template[0];
 		}
 			
 		// loop over action
@@ -176,6 +186,7 @@ class Builder_Controller extends AppController
 			$data = str_replace('{acl_check}',  $acl_check, $data);				
 			$data = str_replace('{controller}',  $controller, $data);
 			$data = str_replace('{tablename}',  $model['tablename'], $data);
+			$data = str_replace('{action}', $action, $data);
 			
 			// assign controller action
 			$controller_action .= $data;
@@ -183,8 +194,8 @@ class Builder_Controller extends AppController
 		
 		// populate template controller
 		$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'controller' . DS . 'controller.php');
-		$data = str_replace('{controller}',  $controller, $data);
 		$data = str_replace('{acl_load}',  $acl_load, $data);		
+		$data = str_replace('{controller}',  $controller, $data);
 		$data = str_replace('{controller_class}',  ucwords($controller), $data);
 		$data = str_replace('{controller_action}',  $controller_action, $data);
 		
@@ -221,18 +232,7 @@ class Builder_Controller extends AppController
 			// assign model action
 			$model_action .= $data;
 		}
-		
-		// populate template _data action
-		if (in_array('view', $actions) || in_array('update', $actions))
-		{
-			$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'model' . DS . '_data.php');
-			$data = str_replace('{tablename}',  $model['tablename'], $data);
-			$data = str_replace('{primary}',  $model['primary'], $data);
-			
-			// assign model action
-			$model_action .= $data;			
-		}
-		
+				
 		// populate template model
 		$data = file_get_contents(APPDIR . 'views' . DS . 'builder' . DS . 'model' . DS . 'model.php');
 		$data = str_replace('{controller}',  $controller, $data);
@@ -409,6 +409,7 @@ class Builder_Controller extends AppController
 				$data = str_replace('{content}',  substr($content, 0, -1), $data);					
 				$data = str_replace('{controller}',  $controller, $data);
 				$data = str_replace('{controller_class}',  ucwords($controller), $data);
+				$data = str_replace('{primary}', $model['primary'], $data);
 			}
 			
 			// show output
@@ -418,7 +419,44 @@ class Builder_Controller extends AppController
 			$this->_writeout(APPDIR . 'views' . DS . $controller . DS . $action . '.php', $data);
 		}
 	}
-	
+
+	/**
+	 * _generate_role
+	 *
+	 * function to generate view files
+	 *
+	 * @access	private
+	 * @param	string $controller
+	 * @param 	array $actions
+	 * @param	array $acl
+	 */
+	private function _generate_role($controller, $actions, $acl)
+	{
+		if ( ! empty($acl) AND sizeof($acl) > 0 )
+		{
+			// show output
+			echo '<br/>Generate access control for ' . $controller . ' module...<br />';					
+
+			// load database
+			$db = $this->load->database();
+
+			// delete existing roles
+			$db->where('group_id', 1)->where('module', $controller)->delete('roles');
+
+			foreach ($actions as $action) 
+			{
+				if ( in_array($action, $acl) )
+				{
+					$role = ['group_id' => 1, 'module' => $controller, 'role' => $action];
+					$db->insert('roles', $role);	
+
+					// show output
+					echo 'Assign ' . $action . ' access role...<br />';										
+				}
+			}
+		}
+	}
+
 	/**
 	 * _writeout
 	 *
@@ -431,11 +469,11 @@ class Builder_Controller extends AppController
 	private function _writeout($filepath, $content)
 	{
 		// create handler
-		if (!$handler = @fopen($filepath, 'w+'))
+		if ( ! $handler = @fopen($filepath, 'w+') )
 			throw new Exception('Cannot open file (' . $filepath . ')', 500);
 		
 		// write data
-		if (fwrite($handler, $content) === FALSE) 
+		if ( fwrite($handler, $content) === FALSE ) 
 			throw new Exception('Cannot write to file (' . $filepath . ')', 500);
 		
 		// show notice

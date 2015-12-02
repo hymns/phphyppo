@@ -1,14 +1,14 @@
 <?php
 /**
- * user.php
+ * session.php
  *
- * user controller function such as login, logout dashboard
+ * session controller function such as login, logout dashboard
  *
  * @package	    	phpHyppo
  * @subpackage		phpHyppo Application Builder
  * @author			Muhammad Hamizi Jaminan
  */
-class Users_Controller extends AppController
+class Session_Controller extends AppController
 {
  	/**
 	 * class constructor
@@ -17,8 +17,8 @@ class Users_Controller extends AppController
 	 */
 	function beforeFilter()
 	{
-		// load authentication library
-		$this->load->library('authentication', 'auth');
+		// load acl library
+		$this->load->library('acl');
 	}
 
 	/**
@@ -32,14 +32,14 @@ class Users_Controller extends AppController
 	public function index()
 	{
 		// check permission
-		if (!$this->auth->is_logged_in())
-			redirect('/user/login');
+		if ( ! $this->acl->is_login() )
+			redirect('/session/login');
 
 		// assign username from session data
 		$session = $this->session->all_userdata();
 
 		// display output
-		$this->view->display('user/index', $session);
+		$this->view->display('session/index', $session);
 	}
 
 	/**
@@ -53,18 +53,18 @@ class Users_Controller extends AppController
 	public function login()
 	{
 		// check existing session
-		if ($this->auth->is_logged_in())
-			redirect('/users/index');
+		if ( $this->acl->is_login() )
+			redirect('/session/index');
 		
 		// prepair update input
 		$input = $this->input->post('data', true);
 		
 		// trigger post
-		if ($input !== false)
+		if ( $input !== false )
 		{
-			// login success
-			if ($this->auth->validate($input))
-				redirect('/users/index');
+			// login success 
+			if ( $this->acl->authorize($input) )
+				redirect('/session/index');
 			
 			// login failed
 			else
@@ -72,7 +72,7 @@ class Users_Controller extends AppController
 		}
 		
 		// display output
-		$this->view->display('users/login');
+		$this->view->display('session/login');
 	}
 
 	/**
@@ -86,12 +86,9 @@ class Users_Controller extends AppController
 	public function logout()
 	{
 		// logging out user
-		$this->auth->logout();
-		
-		// forward user login page
-		redirect('/users/login');
+		$this->acl->revoke('/session/login');
 	}
 }
 
-/* End of user.php */
-/* Location: /application/controller/users.php */
+/* End of session.php */
+/* Location: /application/controller/session.php */

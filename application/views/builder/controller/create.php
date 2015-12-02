@@ -15,10 +15,10 @@
 		$input = $this->input->post('data', true);
 		
 		// input data exist
-		if ($input !== false)
+		if ( $input !== false )
 		{
 			// insert new data to database
-			if ($this->{controller}->create($input))
+			if ( $this->{controller}->create($input) )
 				redirect('/{controller}/index');
 		}
 		

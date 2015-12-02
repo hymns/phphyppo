@@ -1,15 +1,18 @@
 	/**
 	 * view
 	 *
-	 * view / show data from table
+	 * get detail data
 	 *
-	 * @access public	 
-	 * @param int ${tablename}_id
+	 * @access private
+	 * @params int ${tablename}_id
 	 * @return array
 	 */
-	public function view(${tablename}_id)	
-	{
-		// get data details
-		return $this->_data(${tablename}_id);
+	public function view(${tablename}_id)
+	{		
+		// get only one specific data		
+		$this->db->where('{primary}', ${tablename}_id);
+		
+		// from table {tablename}
+		return $this->db->find('{tablename}');	
 	}
 
