@@ -801,6 +801,72 @@ class ActiveRecord
 	}
 
 	/**
+	 * not_in
+	 *
+	 * set an active record IN clause
+	 *		WHERE ...some condition... AND `user_id` NOT IN ('12','16','18')
+	 *
+	 * @access	public
+	 * @param	string $column_name
+	 * @param	mixed $elements
+	 * @param	bool $list (optional)
+	 */
+	public function not_in( $column_name, $elements, $list = false )
+	{
+		$this->_not_in( $column_name, $elements, $list, 'AND' );
+
+		return $this;
+	}
+
+	/**
+	 * or_not_in
+	 *
+	 * set an active record OR IN clause
+	 *		WHERE ...some condition... OR `user_id` NOT IN ('12','16','18')
+	 *
+	 * @access	public
+	 * @param	string $column_name
+	 * @param	mixed $elements
+	 * @param	bool $list (optional)
+	 */
+	public function or_not_in( $column_name, $elements, $list = false )
+	{
+		$this->_not_in( $column_name, $elements, $list, 'OR' );
+
+		return $this;
+	}
+
+	/**
+	 * _not_in
+	 *
+	 * set an active record IN clause
+	 *
+	 * @access	private
+	 * @param	string $column_name
+	 * @param	mixed $elements
+	 * @param	bool $list (optional)
+	 * @param	string $prefix (optional)
+	 */
+	private function _not_in( $column_name, $elements, $list = false, $prefix = 'AND' )
+	{
+		if ( ! $list )
+		{
+			if ( ! is_array( $elements ) )
+				$elements = explode( ',', $elements );
+
+			// quote elements for query
+			foreach( $elements as $key => $element )
+				$elements[$key] = $this->pdo->quote( $element );
+			
+			$clause = sprintf( '%s NOT IN (%s)', $column_name, implode( ',', $elements ));
+		}
+		else
+			$clause = sprintf( '%s NOT IN (%s)', $column_name, $elements );
+		
+		$this->_where( $clause, array(), $prefix );
+	}
+
+	/**
 	 * join
 	 *
 	 * set the active record join clause
