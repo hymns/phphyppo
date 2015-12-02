@@ -351,6 +351,7 @@ class Builder_Controller extends AppController
 				$data = str_replace('{content}',  substr($content, 0, -1), $data);					
 				$data = str_replace('{controller}',  $controller, $data);
 				$data = str_replace('{controller_class}',  ucwords($controller), $data);
+				$data = str_replace('{primary}', $model['primary'], $data);
 			}
 			
 			// create action
