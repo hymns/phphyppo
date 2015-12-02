@@ -2,19 +2,16 @@ NAME:
     phpHyppo Yet Another MVC application framework for PHP5+.
 
 AUTHOR:  
-    Muhammad Hamizi Jaminan (hymns [at] time [dot] net [dot] my)
+    Muhammad Hamizi Jaminan (hello [at] hamizi [dot] net)
   
 VERSION:
     15.11
 
 DATE:
-    Nov 12th, 2015
+    Dec 3rd, 2015
 
 WEBSITE:
-    http://www.phphyppo.org
-
-DOWNLOAD:
-    http://www.phphyppo.org/download
+    N/A
 
 DESCRIPTION:
 
@@ -59,7 +56,7 @@ FEATURES:
 
 
 COPYRIGHT:
-    Copyright(c) 2008-2011 Green Apple Software. All rights reserved.
+    Copyright(c) 2008-2015 Swirly Technology. All rights reserved.
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Lesser General Public License as published by
