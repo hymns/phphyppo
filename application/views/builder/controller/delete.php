@@ -4,7 +4,7 @@
 	 * remove or delete existing {controller}
 	 *
 	 * @access public
-	 * @return none
+	 * @return void
 	 */
 	public function delete(${tablename}_id)
 	{

@@ -4,7 +4,7 @@
 	 * create / add new data
 	 *
 	 * @access public
-	 * @params array $input
+	 * @param array $input
 	 * @return integer
 	 */	
 	public function create($input)	

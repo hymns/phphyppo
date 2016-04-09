@@ -4,7 +4,7 @@
 	 * listing data {controller}
 	 *
 	 * @access public
-	 * @return none
+	 * @return void
 	 */
 	public function index()
 	{	

@@ -139,6 +139,7 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 			$error_file 	= $exception->getFile();
 			$error_line 	= $exception->getLine();
 			$error_msg 		= $exception->getMessage();
+			$error_trace   = $exception->getTraceAsString();
 			
 			// send header error
 			if ( ! headers_sent() )

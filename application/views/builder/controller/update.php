@@ -4,7 +4,7 @@
 	 * update existing {controller}
 	 *
 	 * @access public
-	 * @return none
+	 * @return void
 	 */
 	public function update(${tablename}_id)
 	{

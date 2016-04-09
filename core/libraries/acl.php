@@ -195,13 +195,23 @@ class ACL
 		// get role session
 		$roles = $this->instance->session->userdata('roles');
 		
-		// wildcard
-		if ( $role == '*' )
-			return in_array($module, array_keys($roles)) != false;
+		// check module
+		if ( in_array($module, array_keys($roles)) != false )
+		{
+			// wildcard access
+			if ( $role == '*' )
+				return true;
 
-		// specific
-		else
-			return in_array($role, $roles[$module]) != false;
+			// wildcard role
+			elseif ( in_array('*', array_values($roles[$module])) != false)
+				return true;
+
+			// specific
+			else
+				return in_array($role, $roles[$module]) != false;
+		}
+
+		return false;
 	}
 
 	/**

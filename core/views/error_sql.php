@@ -78,5 +78,9 @@ pre {
 <p>Locate the model file under:</p>
 <code class='code'><?php echo APPDIR . 'models' . DS; ?></code>
 
+<p>Stack Trace</p>
+<pre class="code">
+<?php echo $error_trace; ?>
+</pre>
 </body>
 </html>

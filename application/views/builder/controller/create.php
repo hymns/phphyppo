@@ -4,7 +4,7 @@
 	 * create / add new {controller}
 	 *
 	 * @access public
-	 * @return none
+	 * @return void
 	 */
 	public function create()
 	{	

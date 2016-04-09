@@ -38,6 +38,10 @@ class <span style="color: blue;"><?php echo ucfirst($model);?></span> extends <s
 }
 ?&gt;
 </pre>
+<p>Stack Trace</p>
+<pre class="code">
+<?php echo $error_trace; ?>
+</pre>
 
 </body>
 </html>

@@ -5,7 +5,7 @@
 	 *
 	 * @access public
 	 * @param int ${tablename}_id
-	 * @return none
+	 * @return integer
 	 */
 	public function remove(${tablename}_id)
 	{

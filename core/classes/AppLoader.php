@@ -39,6 +39,25 @@ class AppLoader
 	}
 
 	/**
+	 * config
+	 *
+	 * load config file on controller
+	 *
+	 * @access	public
+	 * @param	string $filename config filename
+	 * @return	array
+	 */
+	public function config( $filename )
+	{
+		$filepath = APPDIR . 'configs' . DS . $filename . '.php';
+
+		if ( file_exists( $filepath ) )
+			return include $filepath;
+		else
+			return array();
+	}
+
+	/**
 	 * bridge
 	 *
 	 * bridge call between controller

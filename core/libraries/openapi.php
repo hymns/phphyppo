@@ -292,7 +292,7 @@ class OpenAPI
 
 		// logging out after fetching
 		$this->_fetch_process($this->openapi_url_logout, $tmp);
-		
+
 		// convert xml to array
 		$object =  @simplexml_load_string($content);
 		$response = null;

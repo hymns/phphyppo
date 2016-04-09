@@ -4,7 +4,7 @@
 	 * get detail data
 	 *
 	 * @access private
-	 * @params int ${tablename}_id
+	 * @param int ${tablename}_id
 	 * @return array
 	 */
 	public function view(${tablename}_id)

@@ -4,7 +4,7 @@
 	 * show / view details {controller}
 	 *
 	 * @access public
-	 * @return none
+	 * @return void
 	 */
 	public function view(${tablename}_id)
 	{

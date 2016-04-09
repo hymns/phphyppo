@@ -331,7 +331,7 @@ class input
 	 */
 	public function files($index = '', $xss_clean = FALSE)
 	{
-		return $this->_fetch_from_array($_FILE, $index, $xss_clean);
+		return $this->_fetch_from_array($_FILES, $index, $xss_clean);
 	}
 
 	/**
