@@ -31,7 +31,7 @@ class ACL
 	 *
 	 * @access private
 	 */
-	public $filter = ['username', 'password'];
+	public $filter = array('username', 'password');
 
 	/**
 	 * instance variable
@@ -67,7 +67,7 @@ class ACL
 	 * make validation for user access
 	 *
 	 * <code>
-	 * 		$auth = ['username' => 'admin', 'password' => 'secret'];
+	 * 		$auth = array('username' => 'admin', 'password' => 'secret');
 	 * 	 
 	 *		$this->load->library('acl');
 	 *		
@@ -106,14 +106,14 @@ class ACL
 		$roles = $this->_getUserRoles($profile['group_id']);
 
 		// prepair session data
-		$session = [
+		$session = array(
 						'user_id' 	=> $profile['user_id'],
 						'username' 	=> $profile['username'],
 						'fullname' 	=> $profile['first_name'] . ' ' . $profile['last_name'],
 						'logged_in' => true,
 						'roles' 	=> $roles,
 						'lastlogin' => ! empty($profile['lastlogin']) ? $profile['lastlogin'] : 'n/a'
-					];
+					);
 		
 		// set session data
 		$this->instance->session->set_userdata($session);
@@ -268,22 +268,22 @@ class ACL
 
 		// set default user
 		if ( ! $user = $this->db->where('user_id', 1)->find('users') )
-			$this->db->insert('users', [
+			$this->db->insert('users', array(
 											'user_id' => 1, 
 											'group_id' => 1, 
 											'username' => 'admin', 
 											'password' => 'admin',
 											'first_name' => 'system',
 											'last_name' => 'admin'
-										]
+										)
 								);
 
 		// set default group name
 		if ( ! $group = $this->db->where('group_id', 1)->find('groups') )
-			$this->db->insert('groups', [
+			$this->db->insert('groups', array(
 											'group_id' => 1, 
 											'group_name' => 'admin'
-										]
+										)
 								);
 	}
 
@@ -328,7 +328,7 @@ class ACL
 
 		// prepare for roles
 		$module = '';
-		$roles = [];
+		$roles = array();
 
 		foreach ($records as $record) 
 		{
@@ -354,7 +354,7 @@ class ACL
 	private function _updateLogin($user_id)
 	{
 		// set last login
-		$data = [ 'lastlogin' => date('Y-m-d H:i:s') ];		
+		$data = array('lastlogin' => date('Y-m-d H:i:s'));		
 
 		// return result
 		return $this->db->where('user_id', $user_id)
