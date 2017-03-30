@@ -67,6 +67,13 @@ include_once( BASEDIR . 'core' . DS . 'helpers' . DS . 'common.php' );
 
 /*
  * ------------------------------------------------------
+ *  Add composer autoload
+ * ------------------------------------------------------
+ */
+include_once( APPDIR . 'vendors' . DS . 'autoload.php' );
+
+/*
+ * ------------------------------------------------------
  *  Define a custom error handler
  * ------------------------------------------------------
  */
@@ -74,15 +81,15 @@ set_error_handler( array( 'CustomException', 'errorHandlerCallback' ) );
 set_exception_handler( 'custom_exception_handler' );
 
 /**
- *  __autoload
+ * class_loader
  *
- * PHP magic function to easy load the core classes
+ * framework autoload the core classes
  *
  * @access	public
  * @param	string $classname
  * @return	boolean
  */
-function __autoload( $classname )
+function class_loader( $classname )
 {
 	// core & controller data
 	$core_class = array( 'AppController', 'AppLoader', 'AppModel', 'AppViewer' );
@@ -103,6 +110,7 @@ function __autoload( $classname )
 	return false;
 }
 
+spl_autoload_register('class_loader');
 
 /*
  * ------------------------------------------------------

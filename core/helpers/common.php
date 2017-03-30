@@ -144,7 +144,7 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 			// send header error
 			if ( ! headers_sent() )
 			{
-				header( 'HTTP/1.1 ' . in_array( $error_code, array( 100, 203, 208, 300, 403, 501 ) ) ? '404 Not Found' : '500 Internal Server Error' );
+				header( 'HTTP/1.1 ' . in_array( $error_code, array( 100, 101, 203, 205, 208, 209, 300, 400, 403, 501 ) ) ? '404 Not Found' : '500 Internal Server Error' );
 				header( 'X-Powered-By: phpHyppo/' . VERSION );			
 			}
 			
