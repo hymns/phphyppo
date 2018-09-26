@@ -93,7 +93,7 @@ class CustomException extends Exception
 	{	
 		//echo 'Message: ' . $error_msg . ' Line: ' . $error_line . ' Filename: ' . $error_file;	
 
-		if ( ! preg_match('/AUTH=PLAIN/', $error_msg) AND ! preg_match('/token/', $error_msg) )
+		if ( ! preg_match('/AUTH=PLAIN/', $error_msg) AND ! preg_match('/token/', $error_msg) AND ! preg_match('/ldap_bind/', $error_msg) )
 		{			
 			$exception = new self( $error_msg, $error_code );
 			$exception->line = $error_line;

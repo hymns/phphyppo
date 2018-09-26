@@ -48,12 +48,12 @@ $config['error_debug'] = 0;
  * URI Protocol
  *
  * Variable name of server global to request URI.
- * Available value for this uri protocol is PATH_INFO or ORIG_PATH_INFO
+ * Available value for this uri protocol is REQUEST_URI, PATH_INFO or ORIG_PATH_INFO
  *
  * @access public
  * @value string
  */
-$config['uri_protocol'] = 'PATH_INFO';
+$config['uri_protocol'] = 'REQUEST_URI';
 
 
 /**

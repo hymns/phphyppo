@@ -501,10 +501,12 @@ class input
 		 */
 		if (is_array($str))
 		{
-			while (list($key) = each($str))
-				$str[$key] = $this->xss_clean($str[$key]);
+			$arr = array();
 			
-			return $str;
+			foreach($str as $key => $val)
+				$arr[$key] = $this->xss_clean($val);
+			
+			return $arr;
 		}
 		
 		/*

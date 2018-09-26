@@ -709,6 +709,57 @@ class ActiveRecord
 	}
 
 	/**
+	 * is_null
+	 *
+	 * set an active record IS NULL clause
+	 * 	WHERE ...some conditions... AND `phone` IS NULL
+	 *
+	 * @access	public
+	 * @param	string $column_name
+	 * @param   bool $is_not
+	 */
+	public function is_null( $column_name, $is_not = false)
+	{
+   	    $this->_is_null( $column_name, 'AND', $is_not );
+
+   	    return $this;
+	}
+
+	/**
+	 * or_is_null
+	 *
+	 * set an active record IS NULL clause
+	 * 	WHERE ...some conditions... OR `phone` IS NULL
+	 *
+	 * @access	public
+	 * @param	string $column_name
+	 * @param   bool $is_not	 
+	*/
+	public function or_is_null( $column_name, $is_not = false)
+	{
+	    $this->_is_null( $column_name, 'OR', $is_not );
+
+	    return $this;
+	}
+
+	/**
+	 * _is_null
+	 *
+	 * set an active record IS NULL clause
+	 * 	WHERE ...some conditions... OR `phone` IS NULL
+	 *
+	 * @access	private
+	 * @param	string $column_name
+	 * @param   bool $is_not
+	 */
+	private function _is_null( $column_name, $prefix = 'AND', $is_not = false)
+	{
+		$clause = ! $is_not ? sprintf( '%s IS NULL', $column_name ) : sprintf( '%s IS NOT NULL', $column_name );
+		
+		$this->_where( $clause, (array) (null), $prefix );
+	}
+
+	/**
 	 * between
 	 *
 	 * set an active record BETWEEN clause
