@@ -1,6 +1,4 @@
 	/**
-	 * create
-	 *
 	 * create / add new {controller}
 	 *
 	 * @access public
@@ -13,6 +11,10 @@
 		
 		// get input data & filter it
 		$input = $this->input->post('data', true);
+		
+		/**
+		 * @todo you need to do form validation here
+		 */
 		
 		// input data exist
 		if ( $input !== false )

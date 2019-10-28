@@ -1,19 +1,14 @@
 	/**
-	 * update
-	 *
 	 * update or change data on database
 	 *
 	 * @access public	 
-	 * @param array $input 	 
-	 * @param array $update 
+	 * @param array $input 	new data for updating
+	 * @param array $update condition for update
 	 * @return integer
 	 */	
 	public function update($input, $update)
 	{
-		// update only specific data		
-		$this->db->where($update);
-		
-		// update data on table {tablename}
-		return $this->db->update('{tablename}', $input);
+		return $this->db->where($update)
+						->update('{tablename}', $input);
 	}
 

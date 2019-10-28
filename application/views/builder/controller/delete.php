@@ -1,15 +1,13 @@
 	/**
-	 * delete
-	 *
 	 * remove or delete existing {controller}
 	 *
 	 * @access public
+	 * @param int $id selected id to delete
 	 * @return void
 	 */
-	public function delete(${tablename}_id)
+	public function delete($id)
 	{
 {acl_check}		// remove {controller} from database
-		$this->{controller}->remove(${tablename}_id);
+		$this->{controller}->remove($id);
 		redirect('/{controller}/index');
 	}
-

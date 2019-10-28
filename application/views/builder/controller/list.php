@@ -1,6 +1,4 @@
 	/**
-	 * index
-	 *
 	 * listing data {controller}
 	 *
 	 * @access public

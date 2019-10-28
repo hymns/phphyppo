@@ -6,7 +6,7 @@
 	 * @access public
 	 * @return void
 	 */
-	public function update(${tablename}_id)
+	public function update($id)
 	{
 {acl_check}		// load input library
 		$this->load->library('input');
@@ -14,6 +14,10 @@
 		// get input data & filter it
 		$input = $this->input->post('data', true);
 		
+		/**
+		 * @todo you need to do form validation here
+		 */
+
 		// data exists
 		if ( $input !== false )
 		{
@@ -28,7 +32,7 @@
 		}
 		
 		// get {controller} data from database
-		$content = $this->{controller}->view(${tablename}_id);
+		$content = $this->{controller}->view($id);
 		
 		// bind {controller} data to template
 		$data['content'] = $this->view->fetch('{controller}/update', $content);

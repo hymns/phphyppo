@@ -99,8 +99,8 @@ class Builder_Controller extends AppController
 			exit('Please enter controller name (characters only)');
 		
 		// check reserve name
-		if ( $controller == 'builder' )
-			exit('Cannot use reserved controller name "builder"');
+		if ( in_array($controller, array('builder', 'session')) )
+			exit('Cannot use reserved controller name: ' . $controller);
 		
 		// default value for action
 		if ( empty($actions) )
@@ -125,7 +125,7 @@ class Builder_Controller extends AppController
 		$model['primary'] = $this->input->post('primary', true);
 		$model['type'] = $this->input->post('type', true);
 		
-		// check ai field
+		// check auto increment field
 		$autoincrement = $this->input->post('autoincrement', true);
 		$model['autoincrement'] = $autoincrement !== false ? $autoincrement : null;
 
@@ -135,16 +135,10 @@ class Builder_Controller extends AppController
 		// show output
 		$this->view->display('builder/deploy', $content);
 		
-		// generate controller
+		// generate controller, model, view & roles
 		$this->_generate_controller($controller, $actions, $model, $acl);
-		
-		// generate model
 		$this->_generate_model($controller, $actions, $model);
-		
-		// generate view
 		$this->_generate_view($controller, $actions, $model); 
-
-		// generate role
 		$this->_generate_role($controller, $actions, $acl); 
 
 		// show notice

@@ -1,18 +1,12 @@
 	/**
-	 * remove
-	 *
 	 * delete / remove existing data
 	 *
 	 * @access public
-	 * @param int ${tablename}_id
+	 * @param int $id the id of specific selected data
 	 * @return integer
 	 */
-	public function remove(${tablename}_id)
+	public function remove($id)
 	{
-		// remove only specific {tablename}		
-		$this->db->where('{primary}', ${tablename}_id);				
-		
-		// from table {tablename}
-		return $this->db->delete('{tablename}');
+		return $this->db->where('{primary}', $id)
+						->delete('{tablename}');
 	}
-

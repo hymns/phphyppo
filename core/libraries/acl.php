@@ -57,8 +57,9 @@ class ACL
 		// load up instance
 		$this->instance = get_instance();
 		
-		// load up session library
+		// load up db & session library
 		$this->instance->load->library('session');
+		$this->db = $this->instance->load->database();
 	}
 
 	/**
@@ -77,12 +78,12 @@ class ACL
 	 *
 	 * @access public
 	 * @param array 	$auth 		Array of user info, accept array key username & password
-	 * @param bool 		$encrypt 	Pass value 'true' when you want using encryption. Default is 'false'
+	 * @param bool 		$encrypt 	Pass value 'true' when you want using encryption. Default is 'true'
 	 * @param string 	$algorithm 	The type of algorithm. Default is 'sha1'
 	 * @param string	$field 		Field for encryption field. Default is 'password'
 	 * @return bool
 	 */
-	public function authorize($auth, $encrypt = false, $algorithm = 'sha1', $field = 'password')
+	public function authorize($auth, $encrypt = true, $algorithm = 'sha1', $field = 'password')
 	{
 		// only accept filter field
 		$auth = array_intersect_key($auth, array_flip($this->filter));
@@ -107,19 +108,19 @@ class ACL
 
 		// prepair session data
 		$session = array(
-						'user_id' 	=> $profile['user_id'],
+						'user_id' 	=> $profile['id'],
 						'username' 	=> $profile['username'],
 						'fullname' 	=> $profile['first_name'] . ' ' . $profile['last_name'],
 						'logged_in' => true,
 						'roles' 	=> $roles,
-						'lastlogin' => ! empty($profile['lastlogin']) ? $profile['lastlogin'] : 'n/a'
+						'last_login' => ! empty($profile['last_login']) ? $profile['last_login'] : 'n/a'
 					);
 		
 		// set session data
 		$this->instance->session->set_userdata($session);
 		
         // update login info
-		$this->_updateLogin($profile['user_id']);
+		$this->_updateLogin($profile['id']);
 		
 		// authorize
 		return true;
@@ -196,19 +197,19 @@ class ACL
 		$roles = $this->instance->session->userdata('roles');
 		
 		// check module
-		if ( in_array($module, array_keys($roles)) != false )
+		if ( in_array($module, array_keys($roles)) )
 		{
 			// wildcard access
 			if ( $role == '*' )
 				return true;
 
 			// wildcard role
-			elseif ( in_array('*', array_values($roles[$module])) != false)
+			elseif ( in_array('*', array_values($roles[$module])) )
 				return true;
 
 			// specific
 			else
-				return in_array($role, $roles[$module]) != false;
+				return in_array($role, $roles[$module]);
 		}
 
 		return false;
@@ -229,19 +230,16 @@ class ACL
 	 */
 	public function initiate()
 	{
-		// load database
-		$this->db = $this->instance->load->database();
-
 		// create table users if not exits
 		$this->db->query("CREATE TABLE IF NOT EXISTS `users` (
-							  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+							  `id` int(11) NOT NULL AUTO_INCREMENT,
 							  `group_id` int(11) NOT NULL,
 							  `username` varchar(40) NOT NULL,
 							  `password` varchar(40) NOT NULL,
 							  `first_name` varchar(50) NOT NULL,
 							  `last_name` varchar(50) NOT NULL,
-							  `lastlogin` datetime NOT NULL,
-							  PRIMARY KEY (`user_id`),
+							  `last_login` datetime NULL,
+							  PRIMARY KEY (`id`),
 							  UNIQUE KEY `username` (`username`),
 							  KEY `group_id` (`group_id`)
 							) ENGINE=MyISAM
@@ -249,42 +247,49 @@ class ACL
 
 		// create table groups if not exits
 		$this->db->query("CREATE TABLE IF NOT EXISTS `groups` (
-							  `group_id` int(11) NOT NULL AUTO_INCREMENT,
-							  `group_name` varchar(40) NOT NULL,
-							  PRIMARY KEY (`group_id`)
+							  `id` int(11) NOT NULL AUTO_INCREMENT,
+							  `name` varchar(40) NOT NULL,
+							  PRIMARY KEY (`id`)
 							) ENGINE=MyISAM
 						");
 
 		// create table roles if not exits
 		$this->db->query("CREATE TABLE IF NOT EXISTS `roles` (
-							  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+							  `id` int(11) NOT NULL AUTO_INCREMENT,
 							  `group_id` int(11) NOT NULL,
 							  `module` varchar(40) NOT NULL,
 							  `role` varchar(40) NOT NULL,
-							  PRIMARY KEY (`role_id`),
+							  PRIMARY KEY (`id`),
 							  KEY `group_id` (`group_id`)
 							) ENGINE=MyISAM
 						");
 
 		// set default user
-		if ( ! $user = $this->db->where('user_id', 1)->find('users') )
+		if ( ! $user = $this->db->where('username', 'admin')->find('users') )
 			$this->db->insert('users', array(
-											'user_id' => 1, 
-											'group_id' => 1, 
-											'username' => 'admin', 
-											'password' => 'admin',
-											'first_name' => 'system',
-											'last_name' => 'admin'
+											'group_id' => 1,
+											'username' => 'admin',
+											'password' => sha1('admin'),
+											'first_name' => 'System',
+											'last_name' => 'Admin'
 										)
 								);
 
 		// set default group name
-		if ( ! $group = $this->db->where('group_id', 1)->find('groups') )
+		if ( ! $group = $this->db->where('name', 'admin')->find('groups') )
+		{
+			// admin group
 			$this->db->insert('groups', array(
-											'group_id' => 1, 
-											'group_name' => 'admin'
+											'name' => 'admin'
 										)
 								);
+
+			// user group
+			$this->db->insert('groups', array(
+											'name' => 'user'
+										)
+								);
+		}
 	}
 
 	/**
@@ -298,11 +303,8 @@ class ACL
 	 */
 	private function _validateUser($data)
 	{
-		// load database
-		$this->db = $this->instance->load->database();
-			
 		// return record set
-		return $this->db->select('user_id, group_id, first_name, last_name, username, lastlogin')
+		return $this->db->select('id, group_id, first_name, last_name, username, last_login')
 						->where($data)
 						->find('users');
 	}
@@ -318,9 +320,6 @@ class ACL
 	 */
 	private function _getUserRoles($group_id)
 	{
-		// load database
-		$this->db = $this->instance->load->database();
-
 		// get record
 		$records = $this->db->select('module, role')
 							->where('group_id', $group_id)
@@ -354,12 +353,12 @@ class ACL
 	private function _updateLogin($user_id)
 	{
 		// set last login
-		$data = array('lastlogin' => date('Y-m-d H:i:s'));		
+		$data = array('last_login' => date('Y-m-d H:i:s'));
 
 		// return result
-		return $this->db->where('user_id', $user_id)
+		return $this->db->where('id', $user_id)
 						->update('users', $data);
-	}	
+	}
 }
 
 /* End of file acl.php */

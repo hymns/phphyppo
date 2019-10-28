@@ -1,18 +1,13 @@
 	/**
-	 * view
+	 * show selected detail data
 	 *
-	 * get detail data
-	 *
-	 * @access private
-	 * @param int ${tablename}_id
+	 * @access public
+	 * @param int $id  the id of specific selected data
 	 * @return array
 	 */
-	public function view(${tablename}_id)
+	public function view($id)
 	{		
-		// get only one specific data		
-		$this->db->where('{primary}', ${tablename}_id);
-		
-		// from table {tablename}
-		return $this->db->find('{tablename}');	
+		$this->db->where('{primary}', $id)
+				 ->find('{tablename}');
 	}
 
