@@ -31,6 +31,7 @@ $config['db_persistent'] = false;
 /* database encoding character set */
 $config['db_use_charset'] = true;
 $config['db_charset'] 	= 'UTF-8';
+$config['db_mode_ofgb'] = false;
 
 /* database default load */
 $config['db_default'] = 'development';

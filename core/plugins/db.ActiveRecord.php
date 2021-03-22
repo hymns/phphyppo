@@ -184,6 +184,10 @@ class ActiveRecord
 			// exec character set
 			if ( empty( $config['db_charset'] ) )			
 				$this->pdo->exec('SET CHARACTER SET ' . $config['db_charset']);
+
+			// exec session init
+			if ( $config['db_mode_ofgb'] )
+				$this->pdo->exec("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 		}
 
 		catch ( PDOException $e )

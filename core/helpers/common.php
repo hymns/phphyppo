@@ -117,12 +117,15 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 {
 	function custom_exception_handler( $exception )
 	{
+		// server protocol
+		$protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
+
 		// production mode
 		if ( CONF_ERROR_DEBUG )
 		{
 			if ( ! headers_sent() )
 			{
-				header( 'HTTP/1.1 500 Internal Server Error' );
+				header( $protocol . ' Internal Server Error' );
 				header( 'X-Powered-By: phpHyppo/' . VERSION );			
 			}
 			
@@ -139,12 +142,12 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 			$error_file 	= $exception->getFile();
 			$error_line 	= $exception->getLine();
 			$error_msg 		= $exception->getMessage();
-			$error_trace   = $exception->getTraceAsString();
+			$error_trace    = $exception->getTraceAsString();
 			
 			// send header error
 			if ( ! headers_sent() )
 			{
-				header( 'HTTP/1.1 ' . in_array( $error_code, array( 100, 101, 203, 205, 208, 209, 300, 400, 403, 501 ) ) ? '404 Not Found' : '500 Internal Server Error' );
+				header( $protocol . ' ' . in_array( $error_code, array( 100, 101, 203, 205, 208, 209, 300, 400, 403, 501 ) ) ? '404 Not Found' : '500 Internal Server Error' );
 				header( 'X-Powered-By: phpHyppo/' . VERSION );			
 			}
 			
