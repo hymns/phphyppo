@@ -120,7 +120,8 @@ spl_autoload_register('class_loader');
  * Grab url segment, split the controller & method name
  *
  */
-$uri_segment = !empty( $_SERVER[CONF_URI_PROTOCOL] ) ? explode( '/', ltrim($_SERVER[CONF_URI_PROTOCOL], '/') ) : null;
+$uri_segment = str_replace(CONF_BASE_PATH, '', rtrim($_SERVER[CONF_URI_PROTOCOL], '/'));
+$uri_segment = !empty( $uri_segment ) ? explode( '/', ltrim($uri_segment, '/') ) : null;
 
 // get controller & method
 list($controller_name, $controller_event) = $uri_segment;
@@ -130,7 +131,7 @@ $controller_name = !empty( $controller_name ) ? preg_replace( '!\W!', '', $contr
 $controller_event = !empty( $controller_event ) ? preg_replace( '!\W!', '', $controller_event ) : 'index';
 
 // grab user params
-$controller_params = sizeof($uri_segment) > 1 ? array_slice($uri_segment, 2) : array();
+$controller_params = is_array($uri_segment) && count($uri_segment) > 1 ? array_slice($uri_segment, 2) : array();
 
 /*
  * ------------------------------------------------------
