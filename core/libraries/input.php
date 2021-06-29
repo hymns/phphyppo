@@ -193,8 +193,8 @@ class input
 		}
 
 		// We strip slashes if magic quotes is on to keep things consistent
-		if (get_magic_quotes_gpc())
-			$str = stripslashes($str);
+		if (function_exists('stripslashes_deep'))
+			$str = stripslashes_deep($str);
 
 		// Should we filter the input data?
 		if ($this->use_xss_clean === TRUE)

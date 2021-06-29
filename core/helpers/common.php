@@ -126,7 +126,6 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 			if ( ! headers_sent() )
 			{
 				header( $protocol . ' Internal Server Error' );
-				header( 'X-Powered-By: phpHyppo/' . VERSION );			
 			}
 			
 			include_once dirname(dirname(__FILE__)) . DS . 'views' . DS . 'error_splash.php';
@@ -148,7 +147,6 @@ if ( ! function_exists( 'custom_exception_handler' ) )
 			if ( ! headers_sent() )
 			{
 				header( $protocol . ' ' . in_array( $error_code, array( 100, 101, 203, 205, 208, 209, 300, 400, 403, 501 ) ) ? '404 Not Found' : '500 Internal Server Error' );
-				header( 'X-Powered-By: phpHyppo/' . VERSION );			
 			}
 			
 			// development error code
@@ -508,6 +506,28 @@ if ( ! function_exists( 'array_mpop' ) )
 		
 		return $array;
 	} 
+}
+
+/**
+ * stripslashes_deep
+ *
+ * replace deprecated get_magic_quotes_gpc
+ *
+ * @access public
+ * @param array $array
+ * @param int $iterate
+ * @return array
+ */
+if ( ! function_exists( 'stripslashes_deep' ) )
+{ 
+
+	function stripslashes_deep($value)
+	{
+	    $value = is_array($value) ?  array_map('stripslashes_deep', $value)
+	                              :  stripslashes($value);
+
+	    return $value;
+	}
 }
 
 /**
