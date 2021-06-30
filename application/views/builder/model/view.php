@@ -7,7 +7,7 @@
 	 */
 	public function view($id)
 	{		
-		$this->db->where('{primary}', $id)
-				 ->find('{tablename}');
+		return $this->db->where('{primary}', $id)
+				->find('{tablename}');
 	}
 
