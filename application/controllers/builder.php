@@ -462,19 +462,27 @@ class Builder_Controller extends AppController
 	 */
 	private function _writeout($filepath, $content)
 	{
-		// create handler
-		if ( ! $handler = @fopen($filepath, 'w+') )
-			throw new Exception('Cannot open file (' . $filepath . ')', 500);
-		
-		// write data
-		if ( fwrite($handler, $content) === FALSE ) 
-			throw new Exception('Cannot write to file (' . $filepath . ')', 500);
-		
-		// show notice
-		echo 'Write code to ' . $filepath . ' file...<br>';
-		
-		// close file
-		fclose($handler);
+		// checking if file not exists
+		if ( ! file_exists($filepath) )
+		{
+			// create handler
+			if ( ! $handler = @fopen($filepath, 'w+') )
+				throw new Exception('Cannot open file (' . $filepath . ')', 500);
+
+			// write data
+			if ( fwrite($handler, $content) === FALSE )
+				throw new Exception('Cannot write to file (' . $filepath . ')', 500);
+
+			// show notice
+			echo 'Write code to ' . $filepath . ' file...<br>';
+
+			// close file
+			fclose($handler);
+		}
+		else
+		{
+			echo 'File ' . $filepath . ' already exists! Skip...<br>';
+		}
 	}
 }
 
