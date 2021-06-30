@@ -255,13 +255,19 @@ class Builder_Controller extends AppController
 		// directory for viewer
 		$directory = APPDIR . 'views' . DS . $controller;
 		
-		// check existing directory
-		if (!file_exists($directory) || !is_dir($directory))
-			mkdir($directory, 0777);
-		
 		// show output
 		echo '<br>Create directory view for ' . $controller . ' controller...<br />';
-		
+
+		// check existing directory
+		if (!file_exists($directory) || !is_dir($directory))
+		{
+			mkdir($directory, 0777);
+		}
+		else
+		{
+			echo 'Directory view for ' . $controller . ' already exists! Skip...<br>';
+		}
+
 		// list over action
 		foreach($actions as $action)
 		{
